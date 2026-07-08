@@ -1,0 +1,33 @@
+/* ============================================================
+   HANNA · Yesos y Aromas — tokens del tema "Papel artesanal"
+   Único tema de producción (ver theme.js del export de diseño
+   para las otras 2 direcciones visuales, no portadas).
+   ============================================================ */
+:root {
+  --paper: #faf3e7;
+  --paper-2: #f3ead9;
+  --surface: #fffdf8;
+  --ink: #211c17;
+  --ink-soft: #6b6256;
+  --line: #e2d6c2;
+  --line-strong: #cdbfa6;
+  --rose: #e59bb0;
+  --rose-deep: #c46b85;
+  --rose-soft: #f7e3e9;
+  --clay: #c08457;
+  --clay-deep: #9a6238;
+  --clay-soft: #efe0cf;
+  --flash: #e0452f;
+  --flash-ink: #ffffff;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", system-ui, sans-serif;
+  --font-script: "Pinyon Script", cursive;
+  --radius: 4px;
+  --radius-lg: 10px;
+  --shadow: 0 18px 40px -28px rgba(58, 44, 28, 0.45);
+  --display-weight: 500;
+  --display-tracking: 0.01em;
+  --display-leading: 1.04;
+  --texture: 1;
+  --gutter: clamp(16px, 4vw, 28px);
+}

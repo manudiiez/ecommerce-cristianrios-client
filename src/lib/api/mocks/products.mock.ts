@@ -1,0 +1,27 @@
+import type { ProductsService } from "../services/products.service";
+import { productsData } from "./data/products.data";
+
+const delay = (ms = 150) => new Promise((r) => setTimeout(r, ms));
+
+export const productsMock: ProductsService = {
+  async getAll(filters) {
+    await delay();
+    let result = productsData;
+    if (filters?.cat) result = result.filter((p) => p.cat === filters.cat);
+    if (filters?.world) result = result.filter((p) => p.world === filters.world);
+    return result;
+  },
+  async getById(id) {
+    await delay();
+    return productsData.find((p) => p.id === id) ?? null;
+  },
+  async getRelated(product, limit = 4) {
+    await delay();
+    const sameCat = productsData.filter((p) => p.cat === product.cat && p.id !== product.id);
+    if (sameCat.length >= limit) return sameCat.slice(0, limit);
+    const sameWorld = productsData.filter(
+      (p) => p.world === product.world && p.cat !== product.cat,
+    );
+    return [...sameCat, ...sameWorld].slice(0, limit);
+  },
+};
