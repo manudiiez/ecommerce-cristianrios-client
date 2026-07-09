@@ -14,4 +14,8 @@ export const flashMock: FlashService = {
     if (!live.length) return null;
     return live.sort((a, b) => a.endsAt - b.endsAt)[0];
   },
+  async getById(id) {
+    await delay();
+    return buildFlashData().find((f) => f.id === id) ?? null;
+  },
 };

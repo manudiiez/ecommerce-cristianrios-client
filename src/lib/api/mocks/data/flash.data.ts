@@ -19,6 +19,11 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 23,
     stockTotal: 60,
     endsInMs: 3 * DAY + 5 * 3600000,
+    variants: [
+      { id: "malbec", label: "Malbec" },
+      { id: "cabernet", label: "Cabernet Franc" },
+      { id: "blend", label: "Gran Corte" },
+    ],
   },
   {
     id: "flash-mate-autografiado",
@@ -30,6 +35,11 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 8,
     stockTotal: 30,
     endsInMs: 1 * DAY + 9 * 3600000,
+    variants: [
+      { id: "calabaza", label: "Calabaza forrada en cuero" },
+      { id: "alpaca", label: "Alpaca cincelada" },
+      { id: "torpedo", label: "Torpedo camionero" },
+    ],
   },
   {
     id: "flash-chocolate",
@@ -41,6 +51,12 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 41,
     stockTotal: 80,
     endsInMs: 6 * DAY + 2 * 3600000,
+    variants: [
+      { id: "clasica", label: "Clásica surtida" },
+      { id: "amargo", label: "70% cacao" },
+      { id: "bombones", label: "Bombones rellenos" },
+      { id: "sin-tacc", label: "Sin TACC" },
+    ],
   },
 ];
 

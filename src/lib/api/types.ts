@@ -86,6 +86,11 @@ export interface Kit {
   tag?: string;
 }
 
+export interface FlashVariant {
+  id: string;
+  label: string;
+}
+
 export interface FlashDeal {
   id: string;
   name: string;
@@ -96,6 +101,7 @@ export interface FlashDeal {
   stockLeft: number;
   stockTotal: number;
   endsAt: number;
+  variants: FlashVariant[];
 }
 
 export interface PriceResult {

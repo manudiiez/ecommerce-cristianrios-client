@@ -51,7 +51,7 @@ export function SplitEntry({ worlds, categories }: SplitEntryProps) {
       {half(worlds[0])}
       <div className="split-seam">
         <div className="seam-badge">
-          <Image src="/logo-hanna.png" alt="Hanna" width={56} height={176} />
+          <Image src="/logo-hanna.png" alt="Hanna" width={56} height={56} />
           <b className="display">Hanna</b>
           <span>Elegí tu mundo</span>
         </div>

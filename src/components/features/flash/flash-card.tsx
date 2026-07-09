@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { FlashDeal } from "@/lib/api";
 import { MiniCountdown } from "@/components/ui/countdown";
 import { Ico } from "@/components/ui/icon";
@@ -11,16 +12,17 @@ export function FlashCard({ deal }: { deal: FlashDeal }) {
   const cart = useCart();
   const pct = Math.round((1 - deal.price / deal.regular) * 100);
   const stockPct = Math.round((deal.stockLeft / deal.stockTotal) * 100);
+  const defaultVariant = deal.variants[0];
 
   const add = () =>
     cart.add({
-      key: "flash|" + deal.id,
+      key: "flash|" + deal.id + "|" + defaultVariant.id,
       id: deal.id,
       name: deal.name,
       world: "flash",
       cat: "flash",
       isFlash: true,
-      sizeLabel: "Oferta flash",
+      sizeLabel: defaultVariant.label,
       finishLabel: "Edición limitada",
       price: deal.price,
       qty: 1,
@@ -28,15 +30,17 @@ export function FlashCard({ deal }: { deal: FlashDeal }) {
 
   return (
     <div className="flash-card fade-in">
-      <div style={{ position: "relative" }}>
+      <Link href={`/ofertas-flash/${deal.id}`} style={{ position: "relative", display: "block" }}>
         <Placeholder tint="#3a2a22" label={deal.name} style={{ aspectRatio: "4/3", borderRadius: 0 }} />
         <div className="badges">
           <span className="pill pill-flash">−{pct}%</span>
         </div>
-      </div>
+      </Link>
       <div className="fc-body">
         <span className="fc-kicker">{deal.kicker}</span>
-        <span className="fc-name">{deal.name}</span>
+        <Link href={`/ofertas-flash/${deal.id}`} className="fc-name">
+          {deal.name}
+        </Link>
         <span className="fc-blurb">{deal.blurb}</span>
         <div className="fc-stock">
           <div className="fc-bar">

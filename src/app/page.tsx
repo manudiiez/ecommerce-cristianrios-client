@@ -1,4 +1,5 @@
 import { FeaturedRow } from "@/components/features/home/featured-row";
+import { FlashCarousel } from "@/components/features/home/flash-carousel";
 import { FlashTeaser } from "@/components/features/home/flash-teaser";
 import { KitsTeaser } from "@/components/features/home/kits-teaser";
 import { SplitEntry } from "@/components/features/home/split-entry";
@@ -17,11 +18,13 @@ export default async function HomePage() {
     api.catalog.getFinishes(),
   ]);
   const featuredFlash = flash[0];
+  const liveFlash = flash.filter((d) => d.endsAt > Date.now());
 
   return (
     <main id="main">
       <SplitEntry worlds={worlds} categories={categories} />
       <Strip />
+      {liveFlash.length > 0 && <FlashCarousel deals={liveFlash} />}
       <FeaturedRow
         world="religioso"
         kicker="Lo más pedido"
