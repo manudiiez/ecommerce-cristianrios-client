@@ -7,8 +7,8 @@ export const kitsData: Kit[] = [
     name: "Kit Altar Devocional",
     blurb: "Para armar o renovar un altar completo.",
     items: [
-      { name: "Jesús · Sagrado Corazón (20 cm)", qty: 3 },
-      { name: "Virgen de Luján (20 cm)", qty: 2 },
+      { name: "Jesús · Sagrado Corazón (20 cm)", qty: 3, productId: "jesus-sagrado-corazon", sizeId: "r-20", finishId: "crudo" },
+      { name: "Virgen de Luján (20 cm)", qty: 2, productId: "virgen-lujan", sizeId: "r-20", finishId: "crudo" },
     ],
     price: 130000,
     regular: 158000,
@@ -21,9 +21,9 @@ export const kitsData: Kit[] = [
     name: "Kit Arranque Holístico",
     blurb: "El surtido ideal para empezar a revender.",
     items: [
-      { name: "Buda en Meditación (Mini)", qty: 4 },
-      { name: "Elefante Trompa Arriba (Mini)", qty: 4 },
-      { name: "Hornillo Flor de Loto (Mini)", qty: 3 },
+      { name: "Buda en Meditación (Mini)", qty: 4, productId: "buda-meditacion", sizeId: "h-mini", finishId: "crudo" },
+      { name: "Elefante Trompa Arriba (Mini)", qty: 4, productId: "elefante-trompa", sizeId: "h-mini", finishId: "crudo" },
+      { name: "Hornillo Flor de Loto (Mini)", qty: 3, productId: "hornillo-flor", sizeId: "h-mini", finishId: "crudo" },
     ],
     price: 96000,
     regular: 121500,
@@ -36,7 +36,7 @@ export const kitsData: Kit[] = [
     name: "Kit Aromas & Hornillo",
     blurb: "Hornillo + aromáticos surtidos para regalo.",
     items: [
-      { name: "Hornillo Mandala (Mini)", qty: 1 },
+      { name: "Hornillo Mandala (Mini)", qty: 1, productId: "hornillo-mandala", sizeId: "h-mini", finishId: "crudo" },
       { name: "Sahumerios surtidos x6 (vía WhatsApp)", qty: 1 },
       { name: "Vela de soja aromática", qty: 1 },
     ],

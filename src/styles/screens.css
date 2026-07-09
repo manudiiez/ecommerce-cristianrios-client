@@ -158,6 +158,9 @@
 .kit-item { display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 12px 14px; }
 .kit-item .ph { width: 64px; height: 64px; border-radius: var(--radius); flex-shrink: 0; }
 .kit-item .qb { margin-left: auto; font-weight: 800; font-size: 15px; background: var(--paper-2); border-radius: 999px; padding: 6px 13px; }
+.kit-item-opts { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+.kit-item-link { text-decoration: none; color: inherit; }
+.kit-item-link:hover { border-color: var(--ink); }
 .kit-price-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow); }
 .kit-price-box .pl { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-soft); padding: 6px 0; }
 .kit-price-box .pl.total { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px; font-size: 17px; color: var(--ink); align-items: baseline; }

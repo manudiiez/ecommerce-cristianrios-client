@@ -72,6 +72,9 @@ export interface Product {
 export interface KitItem {
   name: string;
   qty: number;
+  productId?: string;
+  sizeId?: string;
+  finishId?: FinishId;
 }
 
 export interface Kit {
