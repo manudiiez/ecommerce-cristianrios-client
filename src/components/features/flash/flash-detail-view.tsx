@@ -11,21 +11,25 @@ import { ars } from "@/lib/utils";
 
 export function FlashDetailView({ deal }: { deal: FlashDeal }) {
   const cart = useCart();
-  const [variantId, setVariantId] = useState(deal.variants[0]?.id);
+  const [selected, setSelected] = useState<Record<string, string>>(() =>
+    Object.fromEntries(deal.variantGroups.map((g) => [g.id, g.values[0]?.id])),
+  );
   const [qty, setQty] = useState(1);
   const [mainIdx, setMainIdx] = useState(0);
 
-  const variant = deal.variants.find((v) => v.id === variantId) ?? deal.variants[0];
+  const selectedValues = deal.variantGroups.map(
+    (g) => g.values.find((v) => v.id === selected[g.id]) ?? g.values[0],
+  );
 
   const addToCart = () => {
     cart.add({
-      key: "flash|" + deal.id + "|" + variant.id,
+      key: "flash|" + deal.id + "|" + deal.variantGroups.map((g) => selected[g.id]).join("-"),
       id: deal.id,
       name: deal.name,
       world: "flash",
       cat: "flash",
       isFlash: true,
-      sizeLabel: variant.label,
+      sizeLabel: selectedValues.map((v) => v.label).join(" · "),
       finishLabel: "Edición limitada",
       price: deal.price,
       qty,
@@ -76,19 +80,25 @@ export function FlashDetailView({ deal }: { deal: FlashDeal }) {
           <Countdown endsAt={deal.endsAt} />
         </div>
 
-        <div className="opt-group">
-          <div className="lbl">
-            <b>Variante</b>
-            <span className="sel">{variant.label}</span>
+        {deal.variantGroups.map((group) => (
+          <div className="opt-group" key={group.id}>
+            <div className="lbl">
+              <b>{group.name}</b>
+              <span className="sel">{group.values.find((v) => v.id === selected[group.id])?.label}</span>
+            </div>
+            <div className="opt-row">
+              {group.values.map((v) => (
+                <div
+                  key={v.id}
+                  className={"opt " + (v.id === selected[group.id] ? "active" : "")}
+                  onClick={() => setSelected((s) => ({ ...s, [group.id]: v.id }))}
+                >
+                  <span className="ot">{v.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="opt-row">
-            {deal.variants.map((v) => (
-              <div key={v.id} className={"opt " + (v.id === variantId ? "active" : "")} onClick={() => setVariantId(v.id)}>
-                <span className="ot">{v.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
 
         <div className="pdp-actions">
           <QtyStepper value={qty} onChange={setQty} />

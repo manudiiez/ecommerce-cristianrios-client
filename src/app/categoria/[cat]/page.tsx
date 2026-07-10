@@ -17,7 +17,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
   const w = worlds.find((x) => x.id === category.world)!;
 
   if (category.mode === "whatsapp") {
-    return <WhatsappCategory category={category} world={w} />;
+    const items = await api.catalog.getWhatsappItems(catId);
+    return <WhatsappCategory category={category} world={w} items={items} />;
   }
 
   const [categories, products, allSizes, finishes, worldSizes] = await Promise.all([

@@ -1,18 +1,19 @@
-import type { Category, World } from "@/lib/api";
+import type { Category, WhatsAppItem, World } from "@/lib/api";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { Ico } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
 import { waLink } from "@/lib/utils";
 
-const SAMPLES: Record<string, string[]> = {
-  sahumerios: ["Sándalo", "Palo Santo", "Lavanda", "Vainilla", "Mirra", "Coco", "Canela", "Ruda"],
-  velas: ["Soja natural", "Aromática", "Ritual 7 días", "Decorativa", "Citronela", "Cumpleaños"],
-  inciensos: ["Nag Champa", "Sándalo", "Rosa", "Incienso en cono", "Importado", "Sahumo herbal"],
-};
-
-export function WhatsappCategory({ category, world }: { category: Category; world: World }) {
-  const samples = SAMPLES[category.id] ?? ["Opción 1", "Opción 2", "Opción 3", "Opción 4"];
+export function WhatsappCategory({
+  category,
+  world,
+  items,
+}: {
+  category: Category;
+  world: World;
+  items: WhatsAppItem[];
+}) {
   const consultaMsg = `¡Hola Hanna! Quería consultar por ${category.name} 🙏\n¿Qué opciones/stock tenés disponible hoy?`;
 
   return (
@@ -56,16 +57,19 @@ export function WhatsappCategory({ category, world }: { category: Category; worl
           </div>
         </div>
         <div className="wa-gallery" style={{ marginBottom: 40 }}>
-          {samples.map((s, i) => (
+          {items.map((item, i) => (
             <a
-              key={i}
+              key={item.id}
               className="wa-tile"
-              href={waLink(`¡Hola! Me interesa: ${s} (${category.name}). ¿Tenés stock?`)}
+              href={waLink(item.waMessage)}
               target="_blank"
               rel="noreferrer"
             >
-              <Placeholder world={category.world} cat={category.id} label={s} offset={i} />
-              <span className="nm">{s}</span>
+              <Placeholder world={category.world} cat={category.id} label={item.name} offset={i} />
+              <span className="nm">{item.name}</span>
+              <span className="muted" style={{ fontSize: 12, display: "block" }}>
+                {item.blurb}
+              </span>
               <span className="muted" style={{ fontSize: 12.5, display: "inline-flex", gap: 6, alignItems: "center" }}>
                 <Ico.wa style={{ fontSize: 13, color: "#25D366" }} /> Consultar
               </span>

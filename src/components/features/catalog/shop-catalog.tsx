@@ -5,7 +5,7 @@ import type { Category, Finish, FinishId, Product, Size, WorldId } from "@/lib/a
 import { Ico } from "@/components/ui/icon";
 import { ActiveFilterChips } from "./active-filter-chips";
 import { FiltersSidebar } from "./filters-sidebar";
-import { SizeGroupedCatalog } from "./size-grouped-catalog";
+import { SizeCatalog } from "./size-catalog";
 import { useShopFilter } from "./use-shop-filter";
 
 interface ShopCatalogProps {
@@ -42,17 +42,25 @@ export function ShopCatalog({
         </button>
       </div>
 
-      <ActiveFilterChips f={f} categories={categories} allSizes={allSizes} />
+      <ActiveFilterChips f={f} categories={categories} />
 
       <div className="shop-layout">
         <FiltersSidebar f={f} worldCats={worldCats} worldSizes={worldSizes} world={world} collapsed={!showFilters} />
         <div>
-          <SizeGroupedCatalog
-            filteredProducts={f.filteredProducts}
-            activeSizes={f.activeSizes}
+          <SizeCatalog
+            products={f.filteredProducts}
+            totalCount={f.totalCount}
+            activeSize={f.activeSize}
             categories={categories}
             allSizes={allSizes}
             finishes={finishes}
+            page={f.state.page}
+            totalPages={f.totalPages}
+            onPageChange={f.set.setPage}
+            hasPrevSize={f.hasPrevSize}
+            hasNextSize={f.hasNextSize}
+            onPrevSize={f.prevSize}
+            onNextSize={f.nextSize}
           />
         </div>
       </div>

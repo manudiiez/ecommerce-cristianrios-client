@@ -19,10 +19,16 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 23,
     stockTotal: 60,
     endsInMs: 3 * DAY + 5 * 3600000,
-    variants: [
-      { id: "malbec", label: "Malbec" },
-      { id: "cabernet", label: "Cabernet Franc" },
-      { id: "blend", label: "Gran Corte" },
+    variantGroups: [
+      {
+        id: "sabor",
+        name: "Sabor",
+        values: [
+          { id: "malbec", label: "Malbec" },
+          { id: "cabernet", label: "Cabernet Franc" },
+          { id: "blend", label: "Gran Corte" },
+        ],
+      },
     ],
   },
   {
@@ -35,10 +41,16 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 8,
     stockTotal: 30,
     endsInMs: 1 * DAY + 9 * 3600000,
-    variants: [
-      { id: "calabaza", label: "Calabaza forrada en cuero" },
-      { id: "alpaca", label: "Alpaca cincelada" },
-      { id: "torpedo", label: "Torpedo camionero" },
+    variantGroups: [
+      {
+        id: "modelo",
+        name: "Modelo",
+        values: [
+          { id: "calabaza", label: "Calabaza forrada en cuero" },
+          { id: "alpaca", label: "Alpaca cincelada" },
+          { id: "torpedo", label: "Torpedo camionero" },
+        ],
+      },
     ],
   },
   {
@@ -51,11 +63,17 @@ const flashSeeds: FlashDealSeed[] = [
     stockLeft: 41,
     stockTotal: 80,
     endsInMs: 6 * DAY + 2 * 3600000,
-    variants: [
-      { id: "clasica", label: "Clásica surtida" },
-      { id: "amargo", label: "70% cacao" },
-      { id: "bombones", label: "Bombones rellenos" },
-      { id: "sin-tacc", label: "Sin TACC" },
+    variantGroups: [
+      {
+        id: "tipo",
+        name: "Tipo",
+        values: [
+          { id: "clasica", label: "Clásica surtida" },
+          { id: "amargo", label: "70% cacao" },
+          { id: "bombones", label: "Bombones rellenos" },
+          { id: "sin-tacc", label: "Sin TACC" },
+        ],
+      },
     ],
   },
 ];
