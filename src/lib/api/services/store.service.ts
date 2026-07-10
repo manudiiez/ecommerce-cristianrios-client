@@ -1,3 +1,6 @@
+import type { PayloadStore } from "../payload/adapters";
+import { mapStore } from "../payload/adapters";
+import { payloadGlobal } from "../payload/client";
 import type { Store } from "../types";
 
 export interface StoreService {
@@ -5,7 +8,8 @@ export interface StoreService {
 }
 
 export const storeService: StoreService = {
-  get() {
-    throw new Error("API not implemented");
+  async get() {
+    const raw = await payloadGlobal<PayloadStore>("store");
+    return mapStore(raw);
   },
 };

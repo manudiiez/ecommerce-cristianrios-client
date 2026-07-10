@@ -12,17 +12,17 @@ export function FlashCard({ deal }: { deal: FlashDeal }) {
   const cart = useCart();
   const pct = Math.round((1 - deal.price / deal.regular) * 100);
   const stockPct = Math.round((deal.stockLeft / deal.stockTotal) * 100);
-  const defaultVariant = deal.variants[0];
+  const defaultValues = deal.variantGroups.map((g) => g.values[0]);
 
   const add = () =>
     cart.add({
-      key: "flash|" + deal.id + "|" + defaultVariant.id,
+      key: "flash|" + deal.id + "|" + defaultValues.map((v) => v.id).join("-"),
       id: deal.id,
       name: deal.name,
       world: "flash",
       cat: "flash",
       isFlash: true,
-      sizeLabel: defaultVariant.label,
+      sizeLabel: defaultValues.map((v) => v.label).join(" · "),
       finishLabel: "Edición limitada",
       price: deal.price,
       qty: 1,

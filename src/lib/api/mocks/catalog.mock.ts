@@ -2,6 +2,7 @@ import type { CatalogService } from "../services/catalog.service";
 import { categoriesData } from "./data/categories.data";
 import { finishesData } from "./data/finishes.data";
 import { allSizesData, sizesForWorld } from "./data/sizes.data";
+import { whatsappItemsData } from "./data/whatsapp-items.data";
 import { worldsData } from "./data/worlds.data";
 
 const delay = (ms = 150) => new Promise((r) => setTimeout(r, ms));
@@ -30,5 +31,9 @@ export const catalogMock: CatalogService = {
   async getFinishes() {
     await delay();
     return finishesData;
+  },
+  async getWhatsappItems(catId) {
+    await delay();
+    return catId ? whatsappItemsData.filter((i) => i.cat === catId) : whatsappItemsData;
   },
 };

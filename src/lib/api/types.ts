@@ -89,9 +89,15 @@ export interface Kit {
   tag?: string;
 }
 
-export interface FlashVariant {
+export interface FlashVariantValue {
   id: string;
   label: string;
+}
+
+export interface FlashVariantGroup {
+  id: string;
+  name: string;
+  values: FlashVariantValue[];
 }
 
 export interface FlashDeal {
@@ -104,7 +110,7 @@ export interface FlashDeal {
   stockLeft: number;
   stockTotal: number;
   endsAt: number;
-  variants: FlashVariant[];
+  variantGroups: FlashVariantGroup[];
 }
 
 export interface PriceResult {
@@ -149,4 +155,12 @@ export interface Order {
 export interface ProductFilters {
   cat?: string;
   world?: WorldId;
+}
+
+export interface WhatsAppItem {
+  id: string;
+  cat: string;
+  name: string;
+  blurb: string;
+  waMessage: string;
 }
