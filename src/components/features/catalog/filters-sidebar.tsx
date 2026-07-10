@@ -43,8 +43,8 @@ export function FiltersSidebar({ f, worldCats, worldSizes, collapsed }: FiltersS
           {worldSizes.map((s) => (
             <button
               key={s.id}
-              className={"fchip" + (state.sizes.includes(s.id) ? " active" : "")}
-              onClick={() => set.toggleSize(s.id)}
+              className={"fchip" + (state.activeSizeId === s.id ? " active" : "")}
+              onClick={() => set.selectSize(s.id)}
             >
               {s.label}
             </button>

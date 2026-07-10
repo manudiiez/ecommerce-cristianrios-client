@@ -1,6 +1,7 @@
 import type { Size, WorldId } from "../../types";
 
 export const sizesReligiosoData: Record<string, Size> = {
+  "r-10": { id: "r-10", label: "10 cm", price: 3500, paintedAdd: 1500 },
   "r-15": { id: "r-15", label: "15 cm", price: 5200, paintedAdd: 1500 },
   "r-20": { id: "r-20", label: "20 cm", price: 8500, paintedAdd: 2500 },
   "r-30": { id: "r-30", label: "30 cm", price: 14000, paintedAdd: 4500 },

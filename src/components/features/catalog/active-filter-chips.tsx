@@ -1,17 +1,9 @@
 "use client";
 
-import type { Category, Size } from "@/lib/api";
+import type { Category } from "@/lib/api";
 import type { ShopFilter } from "./use-shop-filter";
 
-export function ActiveFilterChips({
-  f,
-  categories,
-  allSizes,
-}: {
-  f: ShopFilter;
-  categories: Category[];
-  allSizes: Record<string, Size>;
-}) {
+export function ActiveFilterChips({ f, categories }: { f: ShopFilter; categories: Category[] }) {
   const { state, set, clearAll, activeCount } = f;
   if (activeCount === 0) return null;
 
@@ -19,10 +11,6 @@ export function ActiveFilterChips({
   state.cats.forEach((c) => {
     const cc = categories.find((x) => x.id === c);
     chips.push({ label: cc ? cc.name : c, clear: () => set.toggleCat(c) });
-  });
-  state.sizes.forEach((s) => {
-    const so = allSizes[s];
-    chips.push({ label: so ? so.label : s, clear: () => set.toggleSize(s) });
   });
   if (state.onlyOffers) chips.push({ label: "Con descuento", clear: () => set.setOnlyOffers(false) });
 

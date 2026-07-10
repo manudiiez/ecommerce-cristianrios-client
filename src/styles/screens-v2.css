@@ -157,6 +157,10 @@
   background: var(--paper-2); border: 1px solid var(--line); cursor: pointer; }
 .af-pill:hover { border-color: var(--ink); }
 .af-pill .x { font-size: 13px; opacity: .6; }
+.catalog-pager { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.pager-row, .size-nav-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.pager-info { font-size: 13px; color: var(--ink-soft); }
+.btn:disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
 .filters-toggle { display: none; }
 @media (max-width: 880px){
   .filters-toggle { display: inline-flex; align-items:center; gap: 8px; padding: 10px 16px; border-radius: 999px;
