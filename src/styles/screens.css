@@ -73,11 +73,11 @@
 .cat-chip.wa { border-style: dashed; }
 
 /* ---------- breadcrumb ---------- */
-.crumb { display:flex; gap:8px; align-items:center; font-size: 13px; color: var(--ink-soft); padding: 22px 0 0; }
+.crumb { display:flex; gap:8px; align-items:center; font-size: 13px; color: var(--ink-soft); padding-block: 22px 0; }
 .crumb a { cursor: pointer; } .crumb a:hover { color: var(--ink); }
 
 /* page banner for category */
-.cat-banner { padding: 30px 0 8px; }
+.cat-banner { padding-block: 30px 8px; }
 .cat-banner h1 { font-family: var(--font-display); font-weight: var(--display-weight); font-size: clamp(34px, 5vw, 54px); margin: 8px 0 6px; }
 .cat-banner p { color: var(--ink-soft); max-width: 54ch; margin: 0; }
 
