@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { AddKitActions } from "@/components/features/cart/add-kit-actions";
@@ -12,7 +13,12 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
   const kit = await api.kits.getById(id);
   if (!kit) notFound();
 
-  const worlds = await api.catalog.getWorlds();
+  const [worlds, allSizes, finishes, itemProducts] = await Promise.all([
+    api.catalog.getWorlds(),
+    api.catalog.getAllSizes(),
+    api.catalog.getFinishes(),
+    Promise.all(kit.items.map((it) => (it.productId ? api.products.getById(it.productId) : null))),
+  ]);
   const w = worlds.find((x) => x.id === kit.world)!;
   const save = kit.regular - kit.price;
   const pct = Math.round((save / kit.regular) * 100);
@@ -48,21 +54,49 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
           </p>
 
           <div className="kit-items">
-            {kit.items.map((it, i) => (
-              <div className="kit-item" key={i}>
-                <Placeholder
-                  world={kit.world}
-                  cat={collageCats[0]}
-                  label={it.name}
-                  offset={i}
-                  style={{ width: 64, height: 64, borderRadius: "var(--radius)", flexShrink: 0 }}
-                />
-                <div>
-                  <b style={{ fontWeight: 600 }}>{it.name}</b>
+            {kit.items.map((it, i) => {
+              const product = itemProducts[i];
+              const size = it.sizeId ? allSizes[it.sizeId] : undefined;
+              const finish = it.finishId ? finishes[it.finishId] : undefined;
+
+              const content = (
+                <>
+                  <Placeholder
+                    world={product?.world ?? kit.world}
+                    cat={product?.cat ?? collageCats[0]}
+                    label={it.name}
+                    offset={i}
+                    style={{ width: 64, height: 64, borderRadius: "var(--radius)", flexShrink: 0 }}
+                  />
+                  <div>
+                    <b style={{ fontWeight: 600 }}>{it.name}</b>
+                    {(size || finish) && (
+                      <div className="kit-item-opts">
+                        {size?.label}
+                        {size && finish ? " · " : ""}
+                        {finish?.label}
+                      </div>
+                    )}
+                  </div>
+                  <span className="qb">×{it.qty}</span>
+                </>
+              );
+
+              if (product) {
+                const href = it.sizeId ? `/producto/${product.id}?size=${it.sizeId}` : `/producto/${product.id}`;
+                return (
+                  <Link className="kit-item kit-item-link" href={href} key={i}>
+                    {content}
+                  </Link>
+                );
+              }
+
+              return (
+                <div className="kit-item" key={i}>
+                  {content}
                 </div>
-                <span className="qb">×{it.qty}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="kit-price-box">

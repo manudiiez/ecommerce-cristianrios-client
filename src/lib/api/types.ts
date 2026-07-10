@@ -72,6 +72,9 @@ export interface Product {
 export interface KitItem {
   name: string;
   qty: number;
+  productId?: string;
+  sizeId?: string;
+  finishId?: FinishId;
 }
 
 export interface Kit {
@@ -86,6 +89,11 @@ export interface Kit {
   tag?: string;
 }
 
+export interface FlashVariant {
+  id: string;
+  label: string;
+}
+
 export interface FlashDeal {
   id: string;
   name: string;
@@ -96,6 +104,7 @@ export interface FlashDeal {
   stockLeft: number;
   stockTotal: number;
   endsAt: number;
+  variants: FlashVariant[];
 }
 
 export interface PriceResult {
