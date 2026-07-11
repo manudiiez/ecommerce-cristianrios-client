@@ -39,7 +39,7 @@ export function Header({ onMenu }: { onMenu: () => void }) {
             Kits
           </Link>
           <Link href="/ofertas-flash" className="flash">
-            <Ico.bolt style={{ verticalAlign: "-2px", marginRight: 4 }} />
+            <Ico.bolt />
             Ofertas Flash
           </Link>
           <Link href="/contacto" className={active(pathname === "/contacto")}>
