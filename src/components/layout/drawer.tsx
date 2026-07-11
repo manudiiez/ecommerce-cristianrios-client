@@ -2,20 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { Category } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 
 interface DrawerProps {
   open: boolean;
   onClose: () => void;
-  categories: Category[];
 }
 
-export function Drawer({ open, onClose, categories }: DrawerProps) {
+export function Drawer({ open, onClose }: DrawerProps) {
   if (!open) return null;
-  const relig = categories.filter((c) => c.world === "religioso");
-  const holi = categories.filter((c) => c.world === "holistico" && c.mode === "catalog");
-  const wa = categories.filter((c) => c.mode === "whatsapp");
 
   return (
     <>
@@ -34,33 +29,14 @@ export function Drawer({ open, onClose, categories }: DrawerProps) {
           </button>
         </div>
 
-        <h4>
-          <span className="dot dot-clay" style={{ display: "inline-block", width: 8, height: 8, borderRadius: 9, marginRight: 7 }}></span>
+        <Link href="/religioso" className="drawer-world" onClick={onClose}>
+          <span className="dot dot-clay" style={{ display: "inline-block", width: 8, height: 8, borderRadius: 9 }}></span>
           Religioso
-        </h4>
-        {relig.map((c) => (
-          <Link key={c.id} href={`/categoria/${c.id}`} onClick={onClose}>
-            {c.name}
-          </Link>
-        ))}
-
-        <h4>
-          <span className="dot dot-rose" style={{ display: "inline-block", width: 8, height: 8, borderRadius: 9, marginRight: 7 }}></span>
+        </Link>
+        <Link href="/holistico" className="drawer-world" onClick={onClose}>
+          <span className="dot dot-rose" style={{ display: "inline-block", width: 8, height: 8, borderRadius: 9 }}></span>
           Regalería Holística
-        </h4>
-        {holi.map((c) => (
-          <Link key={c.id} href={`/categoria/${c.id}`} onClick={onClose}>
-            {c.name}
-          </Link>
-        ))}
-
-        <h4>Solo por WhatsApp</h4>
-        {wa.map((c) => (
-          <Link key={c.id} href={`/categoria/${c.id}`} className="dc" onClick={onClose}>
-            <Ico.wa style={{ fontSize: 16, color: "#25D366" }} />
-            {c.name}
-          </Link>
-        ))}
+        </Link>
 
         <hr className="divider" style={{ margin: "14px 0" }} />
         <Link href="/kits" onClick={onClose}>

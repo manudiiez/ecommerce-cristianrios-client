@@ -22,8 +22,11 @@ export function FlashBar({ deal, onClose }: { deal: FlashDeal; onClose: () => vo
         <span className="fb-bolt">
           <Ico.bolt style={{ fontSize: 13 }} /> Oferta Flash
         </span>
-        <span className="fb-text">
+        <span className="fb-text fb-text-full">
           <b>{deal.name}</b> · −{pct}% · {ars(deal.price)} <s>{ars(deal.regular)}</s> — {deal.kicker.toLowerCase()}
+        </span>
+        <span className="fb-text fb-text-compact">
+          <b>{deal.name}</b>
         </span>
         <div className="fb-cd" aria-label="termina en">
           <span style={{ fontSize: 11, opacity: 0.85, textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}>
