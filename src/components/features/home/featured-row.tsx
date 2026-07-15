@@ -25,7 +25,6 @@ export function FeaturedRow({
   allSizes,
   finishes,
 }: FeaturedRowProps) {
-  const items = products.filter((p) => p.world === world).slice(0, 4);
   const w = worlds.find((x) => x.id === world)!;
 
   return (
@@ -47,7 +46,7 @@ export function FeaturedRow({
           </Link>
         </div>
         <div className="grid grid-4">
-          {items.map((p) => {
+          {products.map((p) => {
             const cat = categories.find((c) => c.id === p.cat);
             return (
               <ProductCard

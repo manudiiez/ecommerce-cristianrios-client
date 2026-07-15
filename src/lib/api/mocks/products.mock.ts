@@ -24,4 +24,11 @@ export const productsMock: ProductsService = {
     );
     return [...sameCat, ...sameWorld].slice(0, limit);
   },
+  async getFeatured(world, limit = 4) {
+    await delay();
+    return productsData
+      .filter((p) => p.world === world && p.featured)
+      .sort((a, b) => (a.featuredOrder ?? 0) - (b.featuredOrder ?? 0))
+      .slice(0, limit);
+  },
 };

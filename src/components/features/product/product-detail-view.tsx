@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { Category, Finish, FinishId, Product, Size } from "@/lib/api";
+import type { Category, Finish, FinishId, PriceQuote, Product, Size } from "@/lib/api";
 import { ProductCard } from "@/components/features/catalog/product-card";
 import { Ico } from "@/components/ui/icon";
 import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCart } from "@/hooks/use-cart";
-import { priceFor, worldAccent } from "@/lib/pricing";
+import { discountApplies, toPriceResult, worldAccent } from "@/lib/pricing";
 import { ars, waLink } from "@/lib/utils";
 
 const GALLERY_VIEWS = ["Frente", "Perfil", "Detalle", "Escala"];
@@ -22,6 +22,7 @@ interface ProductDetailViewProps {
   initialSizeId: string;
   related: Product[];
   categories: Category[];
+  priceMap: Record<string, PriceQuote>;
 }
 
 export function ProductDetailView({
@@ -33,6 +34,7 @@ export function ProductDetailView({
   initialSizeId,
   related,
   categories,
+  priceMap,
 }: ProductDetailViewProps) {
   const cart = useCart();
   const [sizeId, setSizeId] = useState(initialSizeId);
@@ -40,7 +42,7 @@ export function ProductDetailView({
   const [qty, setQty] = useState(1);
   const [mainIdx, setMainIdx] = useState(0);
 
-  const pr = priceFor(product, allSizes[sizeId], finishes[finishId], finishId);
+  const pr = toPriceResult(priceMap[`${sizeId}|${finishId}`], product.discount?.label);
   const savePct = pr.was ? Math.round((1 - pr.price / pr.was) * 100) : 0;
   const currentSize = allSizes[sizeId];
 
@@ -124,7 +126,7 @@ export function ProductDetailView({
             </div>
             <div className="opt-row">
               {productSizes.map((s) => {
-                const pp = priceFor(product, s, finishes[finishId], finishId);
+                const pp = toPriceResult(priceMap[`${s.id}|${finishId}`], product.discount?.label);
                 return (
                   <div key={s.id} className={"opt " + (s.id === sizeId ? "active" : "")} onClick={() => setSizeId(s.id)}>
                     <span className="ot">{s.label}</span>
@@ -147,7 +149,7 @@ export function ProductDetailView({
             <div className="opt-row">
               {product.finishes.map((fid) => {
                 const f = finishes[fid];
-                const hasFinishDisc = product.discount && product.discount.scope === `finish:${fid}`;
+                const hasFinishDisc = discountApplies(product.discount, sizeId, fid);
                 return (
                   <div key={fid} className={"opt swatch " + (fid === finishId ? "active" : "")} onClick={() => setFinishId(fid)}>
                     <span className="sw" style={{ background: f.swatch }}></span>

@@ -1,12 +1,13 @@
 import type { PayloadProduct } from "../payload/adapters";
 import { mapProduct } from "../payload/adapters";
-import { payloadFindOneBySlug, payloadList } from "../payload/client";
-import type { Product, ProductFilters } from "../types";
+import { payloadFetch, payloadFind, payloadFindOneBySlug, payloadList } from "../payload/client";
+import type { Product, ProductFilters, WorldId } from "../types";
 
 export interface ProductsService {
   getAll(filters?: ProductFilters): Promise<Product[]>;
   getById(id: string): Promise<Product | null>;
   getRelated(product: Product, limit?: number): Promise<Product[]>;
+  getFeatured(world: WorldId, limit?: number): Promise<Product[]>;
 }
 
 function filtersToParams(filters?: ProductFilters): Record<string, string> {
@@ -26,11 +27,19 @@ export const productsService: ProductsService = {
     return doc ? mapProduct(doc) : null;
   },
   async getRelated(product, limit = 4) {
-    const sameCat = (await productsService.getAll({ cat: product.cat })).filter((p) => p.id !== product.id);
-    if (sameCat.length >= limit) return sameCat.slice(0, limit);
-    const sameWorld = (await productsService.getAll({ world: product.world })).filter(
-      (p) => p.cat !== product.cat,
-    );
-    return [...sameCat, ...sameWorld].slice(0, limit);
+    const data = await payloadFetch<{ docs: PayloadProduct[] }>(`/products/${product.id}/related`, {
+      limit: String(limit),
+    });
+    return data.docs.map(mapProduct);
+  },
+  async getFeatured(world, limit = 4) {
+    const docs = await payloadFind<PayloadProduct>("products", {
+      depth: "2",
+      "where[world.slug][equals]": world,
+      "where[featured][equals]": "true",
+      sort: "featuredOrder",
+      limit: String(limit),
+    });
+    return docs.map(mapProduct);
   },
 };

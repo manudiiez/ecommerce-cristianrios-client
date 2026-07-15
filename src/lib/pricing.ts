@@ -1,7 +1,18 @@
-import type { Finish, PriceResult, Product, Size, WorldId } from "@/lib/api";
+import type { Finish, PriceQuote, PriceResult, Product, ProductDiscount, Size, WorldId } from "@/lib/api";
 
 export function round100(n: number) {
   return Math.round(n / 100) * 100;
+}
+
+/**
+ * Determina si un descuento de producto aplica a una combinación tamaño+terminación.
+ * Ambos filtros (acabado y tamaño) son un AND: los dos deben pasar.
+ */
+export function discountApplies(discount: ProductDiscount | undefined, sizeId: string, finishId: string): boolean {
+  if (!discount) return false;
+  const finishOk = discount.scope === "all" || discount.scope === `finish:${finishId}`;
+  const sizeOk = discount.sizeScope !== "specific" || (discount.sizes?.includes(sizeId) ?? false);
+  return finishOk && sizeOk;
 }
 
 /**
@@ -19,12 +30,9 @@ export function priceFor(
   let price = size.price + finishAdd;
   let was: number | null = null;
   const d = product.discount;
-  if (d) {
-    const applies = d.scope === "all" || (d.scope.startsWith("finish:") && d.scope.split(":")[1] === finishId);
-    if (applies) {
-      was = price;
-      price = round100(price * (1 - d.pct / 100));
-    }
+  if (discountApplies(d, size.id, finishId)) {
+    was = price;
+    price = round100(price * (1 - d!.pct / 100));
   }
   return { price, was, saveLabel: d?.label, hasDiscount: was !== null };
 }
@@ -42,4 +50,18 @@ export function fromPrice(
 
 export function worldAccent(world: WorldId | "flash"): "clay" | "rose" {
   return world === "religioso" ? "clay" : "rose";
+}
+
+/**
+ * Adapta la respuesta de /api/pricing/quote (calculada en el server) a la
+ * forma PriceResult que ya consumen los componentes. No hace ningún cálculo.
+ */
+export function toPriceResult(quote: PriceQuote | undefined, discountLabel?: string): PriceResult {
+  if (!quote) return { price: 0, was: null, hasDiscount: false };
+  return {
+    price: quote.price,
+    was: quote.was ?? null,
+    saveLabel: discountLabel,
+    hasDiscount: quote.was !== undefined,
+  };
 }

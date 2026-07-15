@@ -51,6 +51,8 @@ interface PayloadDiscount {
   label: string | null;
   scope: "all" | "finish";
   finish?: { slug: string } | null;
+  sizeScope?: "all" | "specific";
+  sizes?: { slug: string }[] | null;
 }
 
 export interface PayloadProduct {
@@ -63,6 +65,8 @@ export interface PayloadProduct {
   blurb: string;
   tag?: string | null;
   discount?: PayloadDiscount | null;
+  featured?: boolean | null;
+  featuredOrder?: number | null;
 }
 
 export interface PayloadWhatsAppItem {
@@ -103,6 +107,8 @@ function mapDiscount(raw?: PayloadDiscount | null): ProductDiscount | undefined 
     pct: raw.pct,
     label: raw.label ?? "",
     scope: raw.scope === "finish" && raw.finish ? (`finish:${raw.finish.slug as FinishId}` as const) : "all",
+    sizeScope: raw.sizeScope === "specific" ? "specific" : "all",
+    sizes: raw.sizeScope === "specific" ? raw.sizes?.map((s) => s.slug) : undefined,
   };
 }
 
@@ -117,6 +123,8 @@ export function mapProduct(raw: PayloadProduct): Product {
     blurb: raw.blurb,
     tag: raw.tag ?? undefined,
     discount: mapDiscount(raw.discount),
+    featured: raw.featured ?? false,
+    featuredOrder: raw.featuredOrder ?? undefined,
   };
 }
 

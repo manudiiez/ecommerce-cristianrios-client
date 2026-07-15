@@ -8,16 +8,18 @@ import { WaTeaser } from "@/components/features/home/wa-teaser";
 import { api } from "@/lib/api";
 
 export default async function HomePage() {
-  const [worlds, categories, products, kits, flash, allSizes, finishes] = await Promise.all([
-    api.catalog.getWorlds(),
-    api.catalog.getCategories(),
-    api.products.getAll(),
-    api.kits.getAll(),
-    api.flash.getAll(),
-    api.catalog.getAllSizes(),
-    api.catalog.getFinishes(),
-  ]);
-  const featuredFlash = flash[0];
+  const [worlds, categories, featuredReligioso, featuredHolistico, kits, flash, allSizes, finishes, soonestFlash] =
+    await Promise.all([
+      api.catalog.getWorlds(),
+      api.catalog.getCategories(),
+      api.products.getFeatured("religioso"),
+      api.products.getFeatured("holistico"),
+      api.kits.getAll(),
+      api.flash.getAll(),
+      api.catalog.getAllSizes(),
+      api.catalog.getFinishes(),
+      api.flash.getSoonest(),
+    ]);
   const liveFlash = flash.filter((d) => d.endsAt > Date.now());
 
   return (
@@ -29,7 +31,7 @@ export default async function HomePage() {
         world="religioso"
         kicker="Lo más pedido"
         title="Destacados · Religioso"
-        products={products}
+        products={featuredReligioso}
         worlds={worlds}
         categories={categories}
         allSizes={allSizes}
@@ -39,13 +41,13 @@ export default async function HomePage() {
         world="holistico"
         kicker="Para tu ritual"
         title="Destacados · Holístico"
-        products={products}
+        products={featuredHolistico}
         worlds={worlds}
         categories={categories}
         allSizes={allSizes}
         finishes={finishes}
       />
-      {featuredFlash && <FlashTeaser deal={featuredFlash} />}
+      {soonestFlash && <FlashTeaser deal={soonestFlash} />}
       <KitsTeaser kits={kits} />
       <hr className="divider" />
       <WaTeaser categories={categories} />

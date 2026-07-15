@@ -55,6 +55,8 @@ export interface ProductDiscount {
   pct: number;
   label: string;
   scope: "all" | `finish:${FinishId}`;
+  sizeScope: "all" | "specific";
+  sizes?: string[];
 }
 
 export interface Product {
@@ -67,6 +69,8 @@ export interface Product {
   blurb: string;
   tag?: string;
   discount?: ProductDiscount;
+  featured?: boolean;
+  featuredOrder?: number;
 }
 
 export interface KitItem {
@@ -118,6 +122,11 @@ export interface PriceResult {
   was: number | null;
   saveLabel?: string;
   hasDiscount: boolean;
+}
+
+export interface PriceQuote {
+  price: number;
+  was?: number;
 }
 
 export interface OrderForm {

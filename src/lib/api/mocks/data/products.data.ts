@@ -11,6 +11,8 @@ export const productsData: Product[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Imagen clásica del Sagrado Corazón, molde de alta definición.",
     tag: "Más vendido",
+    featured: true,
+    featuredOrder: 1,
   },
   {
     id: "cristo-redentor",
@@ -20,7 +22,9 @@ export const productsData: Product[] = [
     availableSizes: ["r-20", "r-30", "r-40", "r-50"],
     finishes: ["crudo", "pintada"],
     blurb: "Brazos abiertos, ideal para repisa o altar.",
-    discount: { pct: 10, label: "−10%", scope: "all" },
+    discount: { pct: 10, label: "−10%", scope: "all", sizeScope: "all" },
+    featured: true,
+    featuredOrder: 2,
   },
   {
     id: "jesus-misericordioso",
@@ -30,6 +34,8 @@ export const productsData: Product[] = [
     availableSizes: ["r-10", "r-15", "r-20", "r-30"],
     finishes: ["crudo", "pintada"],
     blurb: "Detalle fino en el manto y los rayos.",
+    featured: true,
+    featuredOrder: 3,
   },
   {
     id: "virgen-lujan",
@@ -40,6 +46,8 @@ export const productsData: Product[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Patrona argentina, manto triangular icónico.",
     tag: "Clásico",
+    featured: true,
+    featuredOrder: 4,
   },
   {
     id: "virgen-guadalupe",
@@ -49,7 +57,13 @@ export const productsData: Product[] = [
     availableSizes: ["r-10", "r-15", "r-20", "r-30"],
     finishes: ["crudo", "pintada"],
     blurb: "Mandorla de rayos, gran nivel de detalle.",
-    discount: { pct: 20, label: "−20% pintada", scope: "finish:pintada" },
+    discount: {
+      pct: 20,
+      label: "−20% pintada",
+      scope: "finish:pintada",
+      sizeScope: "specific",
+      sizes: ["r-20", "r-30"],
+    },
   },
   {
     id: "san-expedito",
@@ -126,6 +140,8 @@ export const productsData: Product[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Postura dhyana, base con loto. El más pedido de la línea.",
     tag: "Más vendido",
+    featured: true,
+    featuredOrder: 1,
   },
   {
     id: "buda-tailandes",
@@ -135,7 +151,9 @@ export const productsData: Product[] = [
     availableSizes: ["h-mediana", "h-grande", "h-gigante"],
     finishes: ["crudo", "pintada"],
     blurb: "Estilizado, ushnisha alta, ideal con dorado a la hoja.",
-    discount: { pct: 15, label: "−15%", scope: "all" },
+    discount: { pct: 15, label: "−15%", scope: "all", sizeScope: "all" },
+    featured: true,
+    featuredOrder: 2,
   },
   {
     id: "elefante-trompa",
@@ -146,6 +164,8 @@ export const productsData: Product[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Símbolo de buena fortuna. Se vende mucho de a pares.",
     tag: "Para revender",
+    featured: true,
+    featuredOrder: 3,
   },
   {
     id: "elefante-mandala",
@@ -155,6 +175,8 @@ export const productsData: Product[] = [
     availableSizes: ["h-mini", "h-chica", "h-mediana"],
     finishes: ["crudo", "pintada"],
     blurb: "Relieve de mandala en el lomo, hermoso pintado.",
+    featured: true,
+    featuredOrder: 4,
   },
   {
     id: "fuente-elefante",
@@ -183,7 +205,7 @@ export const productsData: Product[] = [
     availableSizes: ["h-mini", "h-chica"],
     finishes: ["crudo", "pintada"],
     blurb: "Calado geométrico, base para vela tealight.",
-    discount: { pct: 10, label: "−10%", scope: "all" },
+    discount: { pct: 10, label: "−10%", scope: "all", sizeScope: "all" },
   },
   {
     id: "mandala-pared",
@@ -221,7 +243,7 @@ export const productsData: Product[] = [
     availableSizes: ["h-grande", "h-gigante"],
     finishes: ["crudo", "pintada"],
     blurb: "Fuente con cascada y luz LED. Llega lista.",
-    discount: { pct: 12, label: "−12%", scope: "all" },
+    discount: { pct: 12, label: "−12%", scope: "all", sizeScope: "all" },
   },
   {
     id: "hornillo-elefante",
