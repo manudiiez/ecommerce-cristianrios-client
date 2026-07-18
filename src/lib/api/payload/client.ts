@@ -53,6 +53,7 @@ export async function payloadFindOneBySlug<T>(
   params: Record<string, string> = {},
 ): Promise<T | null> {
   const docs = await payloadList<T>(collection, { "where[slug][equals]": slug, ...params });
+  console.log("payloadFindOneBySlug", collection, slug, JSON.stringify(docs, null, 2));
   return docs[0] ?? null;
 }
 

@@ -1,6 +1,6 @@
 import type { Product } from "../../types";
 
-export const productsData: Product[] = [
+export const productsData: Omit<Product, "images">[] = [
   /* ── Religioso ─────────────────────────────────────── */
   {
     id: "jesus-sagrado-corazon",

@@ -65,7 +65,7 @@ export function WhatsappCategory({
               target="_blank"
               rel="noreferrer"
             >
-              <Placeholder world={category.world} cat={category.id} label={item.name} offset={i} />
+              <Placeholder world={category.world} cat={category.id} label={item.name} offset={i} media={item.image} />
               <span className="nm">{item.name}</span>
               <span className="muted" style={{ fontSize: 12, display: "block" }}>
                 {item.blurb}

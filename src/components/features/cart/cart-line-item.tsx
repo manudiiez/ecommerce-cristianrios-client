@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { CartLine } from "@/lib/api";
 import { Placeholder } from "@/components/ui/placeholder";
 import { QtyStepper } from "@/components/ui/qty-stepper";
@@ -12,13 +13,19 @@ export function CartLineItem({ item }: { item: CartLine }) {
 
   return (
     <div className="cart-line">
-      <Placeholder
-        world={item.world === "flash" ? undefined : item.world}
-        cat={isSpecial ? undefined : item.cat}
-        tint={item.isFlash ? "#3a2a22" : undefined}
-        label={item.name}
-        style={{ width: 92, height: 92, borderRadius: "var(--radius)", flexShrink: 0 }}
-      />
+      {item.imageUrl ? (
+        <div style={{ position: "relative", width: 92, height: 92, borderRadius: "var(--radius)", flexShrink: 0, overflow: "hidden" }}>
+          <Image src={item.imageUrl} alt={item.imageAlt || item.name} fill sizes="92px" style={{ objectFit: "cover" }} />
+        </div>
+      ) : (
+        <Placeholder
+          world={item.world === "flash" ? undefined : item.world}
+          cat={isSpecial ? undefined : item.cat}
+          tint={item.isFlash ? "#3a2a22" : undefined}
+          label={item.name}
+          style={{ width: 92, height: 92, borderRadius: "var(--radius)", flexShrink: 0 }}
+        />
+      )}
       <div>
         <div className="cl-name">{item.name}</div>
         <div className="cl-opts">

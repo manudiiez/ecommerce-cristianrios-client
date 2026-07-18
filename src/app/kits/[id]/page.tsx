@@ -6,6 +6,7 @@ import { Ico } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
 import { api } from "@/lib/api";
+import { coverImage } from "@/lib/images";
 import { ars, waLink } from "@/lib/utils";
 
 export default async function KitDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -38,7 +39,14 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
         <div>
           <div className="kit-collage">
             {collageCats.map((cat, i) => (
-              <Placeholder key={cat} world={kit.world} cat={cat} label={i === 0 ? "Kit" : ""} offset={i} />
+              <Placeholder
+                key={cat}
+                world={kit.world}
+                cat={cat}
+                label={i === 0 ? "Kit" : ""}
+                offset={i}
+                media={kit.images.length ? (kit.images[i % kit.images.length]?.image ?? coverImage(kit.images)) : undefined}
+              />
             ))}
           </div>
         </div>
@@ -66,6 +74,7 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
                     cat={product?.cat ?? collageCats[0]}
                     label={it.name}
                     offset={i}
+                    media={product ? coverImage(product.images) : undefined}
                     style={{ width: 64, height: 64, borderRadius: "var(--radius)", flexShrink: 0 }}
                   />
                   <div>

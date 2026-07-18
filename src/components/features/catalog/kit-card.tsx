@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Kit } from "@/lib/api";
 import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
+import { coverImage } from "@/lib/images";
 import { worldAccent } from "@/lib/pricing";
 import { ars } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ export function KitCard({ kit }: { kit: Kit }) {
           world={kit.world}
           cat={kit.world === "religioso" ? "jesus" : "budas"}
           label="Kit"
+          media={coverImage(kit.images)}
           style={{ aspectRatio: "4/5" }}
         />
         <div className="badges">

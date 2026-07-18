@@ -8,6 +8,7 @@ import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCart } from "@/hooks/use-cart";
+import { mediaUrl, productImage, productImageIndex } from "@/lib/images";
 import { discountApplies, toPriceResult, worldAccent } from "@/lib/pricing";
 import { ars, waLink } from "@/lib/utils";
 
@@ -40,13 +41,26 @@ export function ProductDetailView({
   const [sizeId, setSizeId] = useState(initialSizeId);
   const [finishId, setFinishId] = useState<FinishId>(product.finishes[0]);
   const [qty, setQty] = useState(1);
-  const [mainIdx, setMainIdx] = useState(0);
+  const [legacyIdx, setLegacyIdx] = useState(0);
+  const [manualIdx, setManualIdx] = useState<number | null>(null);
+  const selectionKey = `${sizeId}|${finishId}`;
+  const [lastSelectionKey, setLastSelectionKey] = useState(selectionKey);
+
+  const hasImages = product.images.length > 0;
+  let effectiveManualIdx = manualIdx;
+  if (selectionKey !== lastSelectionKey) {
+    setLastSelectionKey(selectionKey);
+    setManualIdx(null);
+    effectiveManualIdx = null;
+  }
+  const mainIdx = effectiveManualIdx ?? productImageIndex(product.images, sizeId, finishId);
 
   const pr = toPriceResult(priceMap[`${sizeId}|${finishId}`], product.discount?.label);
   const savePct = pr.was ? Math.round((1 - pr.price / pr.was) * 100) : 0;
   const currentSize = allSizes[sizeId];
 
   const addToCart = () => {
+    const media = productImage(product.images, sizeId, finishId);
     cart.add({
       key: `${product.id}|${sizeId}|${finishId}`,
       id: product.id,
@@ -57,6 +71,8 @@ export function ProductDetailView({
       finishLabel: finishes[finishId]?.label ?? finishId,
       price: pr.price,
       qty,
+      imageUrl: mediaUrl(media, "thumbnail"),
+      imageAlt: media?.alt,
     });
   };
 
@@ -65,28 +81,58 @@ export function ProductDetailView({
       <div className="wrap pdp">
         {/* Galería */}
         <div className="pdp-gallery">
-          <Placeholder
-            world={product.world}
-            cat={product.cat}
-            label={product.name}
-            tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
-            offset={mainIdx}
-            style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
-          />
-          <div className="pdp-thumbs">
-            {GALLERY_VIEWS.map((v, i) => (
+          {hasImages ? (
+            <>
               <Placeholder
-                key={v}
                 world={product.world}
                 cat={product.cat}
                 label={product.name}
-                offset={i}
-                active={i === mainIdx}
-                style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
-                onClick={() => setMainIdx(i)}
+                tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
+                media={product.images[mainIdx]?.image}
+                variant="large"
+                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
               />
-            ))}
-          </div>
+              <div className="pdp-thumbs">
+                {product.images.map((img, i) => (
+                  <Placeholder
+                    key={img.image.id}
+                    world={product.world}
+                    cat={product.cat}
+                    label={product.name}
+                    media={img.image}
+                    active={i === mainIdx}
+                    style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
+                    onClick={() => setManualIdx(i)}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <Placeholder
+                world={product.world}
+                cat={product.cat}
+                label={product.name}
+                tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
+                offset={legacyIdx}
+                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
+              />
+              <div className="pdp-thumbs">
+                {GALLERY_VIEWS.map((v, i) => (
+                  <Placeholder
+                    key={v}
+                    world={product.world}
+                    cat={product.cat}
+                    label={product.name}
+                    offset={i}
+                    active={i === legacyIdx}
+                    style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
+                    onClick={() => setLegacyIdx(i)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Info */}

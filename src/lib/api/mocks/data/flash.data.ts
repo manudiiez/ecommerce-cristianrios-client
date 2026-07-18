@@ -1,8 +1,9 @@
 import type { FlashDeal } from "../../types";
+import { mockGalleryImages } from "./media.mock";
 
 const DAY = 86400000;
 
-interface FlashDealSeed extends Omit<FlashDeal, "endsAt"> {
+interface FlashDealSeed extends Omit<FlashDeal, "endsAt" | "images"> {
   endsInMs: number;
 }
 
@@ -80,5 +81,9 @@ const flashSeeds: FlashDealSeed[] = [
 
 export function buildFlashData(): FlashDeal[] {
   const now = Date.now();
-  return flashSeeds.map(({ endsInMs, ...rest }) => ({ ...rest, endsAt: now + endsInMs }));
+  return flashSeeds.map(({ endsInMs, ...rest }, i) => ({
+    ...rest,
+    endsAt: now + endsInMs,
+    images: mockGalleryImages(`flash-${rest.id}`, rest.name, i),
+  }));
 }

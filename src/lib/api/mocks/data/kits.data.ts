@@ -1,6 +1,6 @@
 import type { Kit } from "../../types";
 
-export const kitsData: Kit[] = [
+export const kitsData: Omit<Kit, "images">[] = [
   {
     id: "kit-altar",
     world: "religioso",
