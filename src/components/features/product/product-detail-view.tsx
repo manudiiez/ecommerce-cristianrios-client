@@ -113,30 +113,6 @@ export function ProductDetailView({
             )}
           </div>
 
-          {/* TAMAÑO */}
-          <div className="opt-group">
-            <div className="lbl">
-              <b>
-                <Ico.ruler style={{ verticalAlign: "-2px", marginRight: 6 }} />
-                Tamaño
-              </b>
-              <span className="sel">
-                {currentSize ? currentSize.label : ""} · {ars(pr.price)}
-              </span>
-            </div>
-            <div className="opt-row">
-              {productSizes.map((s) => {
-                const pp = toPriceResult(priceMap[`${s.id}|${finishId}`], product.discount?.label);
-                return (
-                  <div key={s.id} className={"opt " + (s.id === sizeId ? "active" : "")} onClick={() => setSizeId(s.id)}>
-                    <span className="ot">{s.label}</span>
-                    <span className="os">{ars(pp.price)}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
           {/* TERMINACIÓN */}
           <div className="opt-group">
             <div className="lbl">
@@ -158,6 +134,36 @@ export function ProductDetailView({
                       <span className="os">{f.add > 0 ? `+${ars(f.add)}` : f.sub}</span>
                     </span>
                     {hasFinishDisc && (
+                      <span className="opt-badge">
+                        <Pill kind="sale">{product.discount!.label}</Pill>
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* TAMAÑO */}
+          <div className="opt-group">
+            <div className="lbl">
+              <b>
+                <Ico.ruler style={{ verticalAlign: "-2px", marginRight: 6 }} />
+                Tamaño
+              </b>
+              <span className="sel">
+                {currentSize ? currentSize.label : ""} · {ars(pr.price)}
+              </span>
+            </div>
+            <div className="opt-row">
+              {productSizes.map((s) => {
+                const pp = toPriceResult(priceMap[`${s.id}|${finishId}`], product.discount?.label);
+                const hasSizeDisc = discountApplies(product.discount, s.id, finishId);
+                return (
+                  <div key={s.id} className={"opt " + (s.id === sizeId ? "active" : "")} onClick={() => setSizeId(s.id)}>
+                    <span className="ot">{s.label}</span>
+                    <span className="os">{ars(pp.price)}</span>
+                    {hasSizeDisc && (
                       <span className="opt-badge">
                         <Pill kind="sale">{product.discount!.label}</Pill>
                       </span>
