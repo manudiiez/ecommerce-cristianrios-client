@@ -42,18 +42,12 @@ export function ProductDetailView({
   const [finishId, setFinishId] = useState<FinishId>(product.finishes[0]);
   const [qty, setQty] = useState(1);
   const [legacyIdx, setLegacyIdx] = useState(0);
-  const [manualIdx, setManualIdx] = useState<number | null>(null);
+  const [manualSelection, setManualSelection] = useState<{ key: string; idx: number } | null>(null);
   const selectionKey = `${sizeId}|${finishId}`;
-  const [lastSelectionKey, setLastSelectionKey] = useState(selectionKey);
 
   const hasImages = product.images.length > 0;
-  let effectiveManualIdx = manualIdx;
-  if (selectionKey !== lastSelectionKey) {
-    setLastSelectionKey(selectionKey);
-    setManualIdx(null);
-    effectiveManualIdx = null;
-  }
-  const mainIdx = effectiveManualIdx ?? productImageIndex(product.images, sizeId, finishId);
+  const mainIdx =
+    manualSelection?.key === selectionKey ? manualSelection.idx : productImageIndex(product.images, sizeId, finishId);
 
   const pr = toPriceResult(priceMap[`${sizeId}|${finishId}`], product.discount?.label);
   const savePct = pr.was ? Math.round((1 - pr.price / pr.was) * 100) : 0;
@@ -102,7 +96,7 @@ export function ProductDetailView({
                     media={img.image}
                     active={i === mainIdx}
                     style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
-                    onClick={() => setManualIdx(i)}
+                    onClick={() => setManualSelection({ key: selectionKey, idx: i })}
                   />
                 ))}
               </div>

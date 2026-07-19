@@ -14,10 +14,10 @@ export function productImage(
   const exact = images.find((i) => i.size === sizeId && i.finish === finishId);
   if (exact) return exact.image;
 
-  const bySize = sizeId ? images.find((i) => i.size === sizeId) : undefined;
+  const bySize = sizeId ? images.find((i) => i.size === sizeId && !i.finish) : undefined;
   if (bySize) return bySize.image;
 
-  const byFinish = finishId ? images.find((i) => i.finish === finishId) : undefined;
+  const byFinish = finishId ? images.find((i) => i.finish === finishId && !i.size) : undefined;
   if (byFinish) return byFinish.image;
 
   return coverImage(images);
