@@ -108,7 +108,7 @@
   border-left: 3px solid #25D366; border-radius: var(--radius-lg); padding: 18px 20px; margin: 0 0 30px; }
 
 /* ---------- PDP (product detail) ---------- */
-.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 26px 0 10px; align-items: start; }
+.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding-block: 26px 10px; align-items: start; }
 @media (max-width: 880px){ .pdp { grid-template-columns: 1fr; gap: 28px; } }
 .pdp-gallery { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 90px; }
 .pdp-gallery .main { aspect-ratio: 1; }
