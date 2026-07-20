@@ -1,5 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
+import type { Media } from "@/lib/api";
+import { mediaUrl } from "@/lib/images";
 
 type Cat = string | undefined;
 type World = "religioso" | "holistico" | "flash" | undefined;
@@ -36,6 +38,8 @@ interface PlaceholderProps {
   className?: string;
   style?: CSSProperties;
   onClick?: () => void;
+  media?: Media | null;
+  variant?: "thumbnail" | "large";
 }
 
 export function Placeholder({
@@ -49,10 +53,13 @@ export function Placeholder({
   className,
   style,
   onClick,
+  media,
+  variant = "thumbnail",
 }: PlaceholderProps) {
   const t = tint || tintFor(world, cat);
-  const seed = picsumSeed(world, cat, label, offset);
   const classes = ["ph", className, active ? "active" : undefined].filter(Boolean).join(" ");
+  const src = mediaUrl(media, variant) ?? `https://picsum.photos/seed/${picsumSeed(world, cat, label, offset)}/600/750`;
+  const alt = media?.alt || label;
   return (
     <div
       className={classes}
@@ -60,13 +67,7 @@ export function Placeholder({
       onClick={onClick}
       role={onClick ? "button" : undefined}
     >
-      <Image
-        src={`https://picsum.photos/seed/${seed}/600/750`}
-        alt={label}
-        fill
-        sizes="(max-width: 640px) 50vw, 300px"
-        className="ph-img"
-      />
+      <Image src={src} alt={alt} fill sizes="(max-width: 640px) 50vw, 300px" className="ph-img" />
       <div className="ph-overlay" />
       {tag && <div className="corner-tag">{tag}</div>}
     </div>

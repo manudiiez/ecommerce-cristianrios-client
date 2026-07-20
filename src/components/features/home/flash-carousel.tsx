@@ -6,6 +6,7 @@ import type { FlashDeal } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { Placeholder } from "@/components/ui/placeholder";
 import { useCountdown } from "@/hooks/use-countdown";
+import { coverImage } from "@/lib/images";
 import { ars } from "@/lib/utils";
 
 function pad(n: number) {
@@ -34,7 +35,7 @@ export function FlashCarousel({ deals }: { deals: FlashDeal[] }) {
         <div className="fx-slide">
           <div className="stripes"></div>
           <div className="fx-gallery">
-            <Placeholder tint="#3a2a22" label={deal.name} offset={active} style={{ height: "100%" }} />
+            <Placeholder tint="#3a2a22" label={deal.name} offset={active} media={coverImage(deal.images)} variant="large" style={{ height: "100%" }} />
             <div className="fx-badge">
               <span className="pill pill-flash">−{pct}%</span>
             </div>

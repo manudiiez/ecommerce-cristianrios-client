@@ -55,6 +55,34 @@ export interface ProductDiscount {
   pct: number;
   label: string;
   scope: "all" | `finish:${FinishId}`;
+  sizeScope: "all" | "specific";
+  sizes?: string[];
+}
+
+export interface MediaSize {
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface Media {
+  id: number;
+  alt: string;
+  url: string;
+  sizes: {
+    thumbnail: MediaSize;
+    large: MediaSize;
+  };
+}
+
+export interface GalleryImage {
+  image: Media;
+  cover: boolean;
+}
+
+export interface ProductImage extends GalleryImage {
+  size?: string;
+  finish?: FinishId;
 }
 
 export interface Product {
@@ -67,6 +95,9 @@ export interface Product {
   blurb: string;
   tag?: string;
   discount?: ProductDiscount;
+  featured?: boolean;
+  featuredOrder?: number;
+  images: ProductImage[];
 }
 
 export interface KitItem {
@@ -87,6 +118,7 @@ export interface Kit {
   regular: number;
   note?: string;
   tag?: string;
+  images: GalleryImage[];
 }
 
 export interface FlashVariantValue {
@@ -111,6 +143,7 @@ export interface FlashDeal {
   stockTotal: number;
   endsAt: number;
   variantGroups: FlashVariantGroup[];
+  images: GalleryImage[];
 }
 
 export interface PriceResult {
@@ -118,6 +151,11 @@ export interface PriceResult {
   was: number | null;
   saveLabel?: string;
   hasDiscount: boolean;
+}
+
+export interface PriceQuote {
+  price: number;
+  was?: number;
 }
 
 export interface OrderForm {
@@ -141,6 +179,8 @@ export interface CartLine {
   qty: number;
   isKit?: boolean;
   isFlash?: boolean;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 export interface Order {
@@ -163,4 +203,5 @@ export interface WhatsAppItem {
   name: string;
   blurb: string;
   waMessage: string;
+  image: Media | null;
 }

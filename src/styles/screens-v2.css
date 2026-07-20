@@ -94,9 +94,19 @@
 .flashbar .fb-cta { background: #fff; color: #b8210f; font-weight: 800; font-size: 13px; padding: 8px 16px; border-radius: 999px; white-space: nowrap; border: 0; cursor: pointer; }
 .flashbar .fb-close { background: transparent; border: 0; color: rgba(255,255,255,.8); cursor: pointer; font-size: 18px; padding: 4px 8px; line-height: 1; }
 .flashbar .fb-close:hover { color: #fff; }
+.flashbar .fb-text-compact { display: none; }
 @media (max-width: 720px){
-  .flashbar .fb-text { font-size: 12.5px; flex: 1 1 100%; order: 3; }
-  .flashbar .fb-cd { margin-left: 0; } .flashbar .fb-bolt { font-size: 10.5px; }
+  .flashbar-row { flex-wrap: nowrap; }
+  .flashbar .fb-bolt { display: none; }
+  .flashbar .fb-text-full { display: none; }
+  .flashbar .fb-text-compact {
+    display: block; font-size: 13px; flex: 1 1 auto; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .flashbar .fb-cd { margin-left: 0; gap: 6px; flex-shrink: 0; }
+  .flashbar .fb-cd > span:first-child { display: none; }
+  .flashbar .fb-cd .mini-cell { padding: 4px 6px; font-size: 12.5px; min-width: 26px; }
+  .flashbar .fb-cta { display: none; }
 }
 
 /* ---------- FAB de oferta flash (flotante, persistente) ---------- */

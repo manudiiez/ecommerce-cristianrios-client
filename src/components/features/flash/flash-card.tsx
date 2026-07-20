@@ -6,6 +6,7 @@ import { MiniCountdown } from "@/components/ui/countdown";
 import { Ico } from "@/components/ui/icon";
 import { Placeholder } from "@/components/ui/placeholder";
 import { useCart } from "@/hooks/use-cart";
+import { coverImage, mediaUrl } from "@/lib/images";
 import { ars } from "@/lib/utils";
 
 export function FlashCard({ deal }: { deal: FlashDeal }) {
@@ -13,6 +14,7 @@ export function FlashCard({ deal }: { deal: FlashDeal }) {
   const pct = Math.round((1 - deal.price / deal.regular) * 100);
   const stockPct = Math.round((deal.stockLeft / deal.stockTotal) * 100);
   const defaultValues = deal.variantGroups.map((g) => g.values[0]);
+  const media = coverImage(deal.images);
 
   const add = () =>
     cart.add({
@@ -26,12 +28,14 @@ export function FlashCard({ deal }: { deal: FlashDeal }) {
       finishLabel: "Edición limitada",
       price: deal.price,
       qty: 1,
+      imageUrl: mediaUrl(media, "thumbnail"),
+      imageAlt: media?.alt,
     });
 
   return (
     <div className="flash-card fade-in">
       <Link href={`/ofertas-flash/${deal.id}`} style={{ position: "relative", display: "block" }}>
-        <Placeholder tint="#3a2a22" label={deal.name} style={{ aspectRatio: "4/3", borderRadius: 0 }} />
+        <Placeholder tint="#3a2a22" label={deal.name} media={media} style={{ aspectRatio: "4/3", borderRadius: 0 }} />
         <div className="badges">
           <span className="pill pill-flash">−{pct}%</span>
         </div>

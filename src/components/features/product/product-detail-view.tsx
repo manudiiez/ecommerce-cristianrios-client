@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import type { Category, Finish, FinishId, Product, Size } from "@/lib/api";
+import type { Category, Finish, FinishId, PriceQuote, Product, Size } from "@/lib/api";
 import { ProductCard } from "@/components/features/catalog/product-card";
 import { Ico } from "@/components/ui/icon";
 import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCart } from "@/hooks/use-cart";
-import { priceFor, worldAccent } from "@/lib/pricing";
+import { mediaUrl, productImage, productImageIndex } from "@/lib/images";
+import { discountApplies, toPriceResult, worldAccent } from "@/lib/pricing";
 import { ars, waLink } from "@/lib/utils";
 
 const GALLERY_VIEWS = ["Frente", "Perfil", "Detalle", "Escala"];
@@ -22,6 +23,7 @@ interface ProductDetailViewProps {
   initialSizeId: string;
   related: Product[];
   categories: Category[];
+  priceMap: Record<string, PriceQuote>;
 }
 
 export function ProductDetailView({
@@ -33,18 +35,26 @@ export function ProductDetailView({
   initialSizeId,
   related,
   categories,
+  priceMap,
 }: ProductDetailViewProps) {
   const cart = useCart();
   const [sizeId, setSizeId] = useState(initialSizeId);
   const [finishId, setFinishId] = useState<FinishId>(product.finishes[0]);
   const [qty, setQty] = useState(1);
-  const [mainIdx, setMainIdx] = useState(0);
+  const [legacyIdx, setLegacyIdx] = useState(0);
+  const [manualSelection, setManualSelection] = useState<{ key: string; idx: number } | null>(null);
+  const selectionKey = `${sizeId}|${finishId}`;
 
-  const pr = priceFor(product, allSizes[sizeId], finishes[finishId], finishId);
+  const hasImages = product.images.length > 0;
+  const mainIdx =
+    manualSelection?.key === selectionKey ? manualSelection.idx : productImageIndex(product.images, sizeId, finishId);
+
+  const pr = toPriceResult(priceMap[`${sizeId}|${finishId}`], product.discount?.label);
   const savePct = pr.was ? Math.round((1 - pr.price / pr.was) * 100) : 0;
   const currentSize = allSizes[sizeId];
 
   const addToCart = () => {
+    const media = productImage(product.images, sizeId, finishId);
     cart.add({
       key: `${product.id}|${sizeId}|${finishId}`,
       id: product.id,
@@ -55,6 +65,8 @@ export function ProductDetailView({
       finishLabel: finishes[finishId]?.label ?? finishId,
       price: pr.price,
       qty,
+      imageUrl: mediaUrl(media, "thumbnail"),
+      imageAlt: media?.alt,
     });
   };
 
@@ -63,28 +75,58 @@ export function ProductDetailView({
       <div className="wrap pdp">
         {/* Galería */}
         <div className="pdp-gallery">
-          <Placeholder
-            world={product.world}
-            cat={product.cat}
-            label={product.name}
-            tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
-            offset={mainIdx}
-            style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
-          />
-          <div className="pdp-thumbs">
-            {GALLERY_VIEWS.map((v, i) => (
+          {hasImages ? (
+            <>
               <Placeholder
-                key={v}
                 world={product.world}
                 cat={product.cat}
                 label={product.name}
-                offset={i}
-                active={i === mainIdx}
-                style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
-                onClick={() => setMainIdx(i)}
+                tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
+                media={product.images[mainIdx]?.image}
+                variant="large"
+                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
               />
-            ))}
-          </div>
+              <div className="pdp-thumbs">
+                {product.images.map((img, i) => (
+                  <Placeholder
+                    key={img.image.id}
+                    world={product.world}
+                    cat={product.cat}
+                    label={product.name}
+                    media={img.image}
+                    active={i === mainIdx}
+                    style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
+                    onClick={() => setManualSelection({ key: selectionKey, idx: i })}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <Placeholder
+                world={product.world}
+                cat={product.cat}
+                label={product.name}
+                tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
+                offset={legacyIdx}
+                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
+              />
+              <div className="pdp-thumbs">
+                {GALLERY_VIEWS.map((v, i) => (
+                  <Placeholder
+                    key={v}
+                    world={product.world}
+                    cat={product.cat}
+                    label={product.name}
+                    offset={i}
+                    active={i === legacyIdx}
+                    style={{ aspectRatio: "1", cursor: "pointer", borderRadius: "var(--radius)" }}
+                    onClick={() => setLegacyIdx(i)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Info */}
@@ -111,6 +153,37 @@ export function ProductDetailView({
             )}
           </div>
 
+          {/* TERMINACIÓN */}
+          <div className="opt-group">
+            <div className="lbl">
+              <b>
+                <Ico.brush style={{ verticalAlign: "-2px", marginRight: 6 }} />
+                Terminación
+              </b>
+              <span className="sel">{finishes[finishId].label}</span>
+            </div>
+            <div className="opt-row">
+              {product.finishes.map((fid) => {
+                const f = finishes[fid];
+                const hasFinishDisc = discountApplies(product.discount, sizeId, fid);
+                return (
+                  <div key={fid} className={"opt swatch " + (fid === finishId ? "active" : "")} onClick={() => setFinishId(fid)}>
+                    <span className="sw" style={{ background: f.swatch }}></span>
+                    <span>
+                      <span className="ot">{f.label}</span>
+                      <span className="os">{f.add > 0 ? `+${ars(f.add)}` : f.sub}</span>
+                    </span>
+                    {hasFinishDisc && (
+                      <span className="opt-badge">
+                        <Pill kind="sale">{product.discount!.label}</Pill>
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* TAMAÑO */}
           <div className="opt-group">
             <div className="lbl">
@@ -124,38 +197,13 @@ export function ProductDetailView({
             </div>
             <div className="opt-row">
               {productSizes.map((s) => {
-                const pp = priceFor(product, s, finishes[finishId], finishId);
+                const pp = toPriceResult(priceMap[`${s.id}|${finishId}`], product.discount?.label);
+                const hasSizeDisc = discountApplies(product.discount, s.id, finishId);
                 return (
                   <div key={s.id} className={"opt " + (s.id === sizeId ? "active" : "")} onClick={() => setSizeId(s.id)}>
                     <span className="ot">{s.label}</span>
                     <span className="os">{ars(pp.price)}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* TERMINACIÓN */}
-          <div className="opt-group">
-            <div className="lbl">
-              <b>
-                <Ico.brush style={{ verticalAlign: "-2px", marginRight: 6 }} />
-                Terminación
-              </b>
-              <span className="sel">{finishes[finishId].label}</span>
-            </div>
-            <div className="opt-row">
-              {product.finishes.map((fid) => {
-                const f = finishes[fid];
-                const hasFinishDisc = product.discount && product.discount.scope === `finish:${fid}`;
-                return (
-                  <div key={fid} className={"opt swatch " + (fid === finishId ? "active" : "")} onClick={() => setFinishId(fid)}>
-                    <span className="sw" style={{ background: f.swatch }}></span>
-                    <span>
-                      <span className="ot">{f.label}</span>
-                      <span className="os">{f.add > 0 ? `+${ars(f.add)}` : f.sub}</span>
-                    </span>
-                    {hasFinishDisc && (
+                    {hasSizeDisc && (
                       <span className="opt-badge">
                         <Pill kind="sale">{product.discount!.label}</Pill>
                       </span>

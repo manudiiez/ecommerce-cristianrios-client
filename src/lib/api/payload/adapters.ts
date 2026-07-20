@@ -3,10 +3,13 @@ import type {
   Finish,
   FinishId,
   FlashDeal,
+  GalleryImage,
   Kit,
   KitItem,
+  Media,
   Product,
   ProductDiscount,
+  ProductImage,
   Size,
   Store,
   WhatsAppItem,
@@ -46,11 +49,39 @@ export interface PayloadFinish {
   swatch: string;
 }
 
+export interface PayloadMediaSize {
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface PayloadMedia {
+  id: number;
+  alt: string;
+  url: string;
+  sizes: {
+    thumbnail: PayloadMediaSize;
+    large: PayloadMediaSize;
+  };
+}
+
+export interface PayloadGalleryImage {
+  image: PayloadMedia;
+  cover: boolean;
+}
+
+export interface PayloadProductImage extends PayloadGalleryImage {
+  size?: { slug: string } | null;
+  finish?: { slug: string } | null;
+}
+
 interface PayloadDiscount {
   pct: number | null;
   label: string | null;
   scope: "all" | "finish";
   finish?: { slug: string } | null;
+  sizeScope?: "all" | "specific";
+  sizes?: { slug: string }[] | null;
 }
 
 export interface PayloadProduct {
@@ -63,6 +94,9 @@ export interface PayloadProduct {
   blurb: string;
   tag?: string | null;
   discount?: PayloadDiscount | null;
+  featured?: boolean | null;
+  featuredOrder?: number | null;
+  images?: PayloadProductImage[] | null;
 }
 
 export interface PayloadWhatsAppItem {
@@ -71,6 +105,7 @@ export interface PayloadWhatsAppItem {
   category: { slug: string };
   blurb: string;
   waMessage: string;
+  image?: PayloadMedia | null;
 }
 
 export function mapWorld(raw: PayloadWorld): World {
@@ -97,12 +132,39 @@ export function mapFinish(raw: PayloadFinish): Finish {
   return { id: raw.slug as FinishId, label: raw.label, sub: raw.sub, add: 0, swatch: raw.swatch };
 }
 
+export function mapMedia(raw: PayloadMedia): Media {
+  return {
+    id: raw.id,
+    alt: raw.alt,
+    url: raw.url,
+    sizes: {
+      thumbnail: { url: raw.sizes.thumbnail.url, width: raw.sizes.thumbnail.width, height: raw.sizes.thumbnail.height },
+      large: { url: raw.sizes.large.url, width: raw.sizes.large.width, height: raw.sizes.large.height },
+    },
+  };
+}
+
+export function mapGalleryImage(raw: PayloadGalleryImage): GalleryImage {
+  return { image: mapMedia(raw.image), cover: raw.cover };
+}
+
+export function mapProductImage(raw: PayloadProductImage): ProductImage {
+  return {
+    image: mapMedia(raw.image),
+    cover: raw.cover,
+    size: raw.size?.slug,
+    finish: raw.finish?.slug as FinishId | undefined,
+  };
+}
+
 function mapDiscount(raw?: PayloadDiscount | null): ProductDiscount | undefined {
   if (!raw || raw.pct == null) return undefined;
   return {
     pct: raw.pct,
     label: raw.label ?? "",
     scope: raw.scope === "finish" && raw.finish ? (`finish:${raw.finish.slug as FinishId}` as const) : "all",
+    sizeScope: raw.sizeScope === "specific" ? "specific" : "all",
+    sizes: raw.sizeScope === "specific" ? raw.sizes?.map((s) => s.slug) : undefined,
   };
 }
 
@@ -117,6 +179,9 @@ export function mapProduct(raw: PayloadProduct): Product {
     blurb: raw.blurb,
     tag: raw.tag ?? undefined,
     discount: mapDiscount(raw.discount),
+    featured: raw.featured ?? false,
+    featuredOrder: raw.featuredOrder ?? undefined,
+    images: raw.images?.map(mapProductImage) ?? [],
   };
 }
 
@@ -127,6 +192,7 @@ export function mapWhatsAppItem(raw: PayloadWhatsAppItem): WhatsAppItem {
     name: raw.name,
     blurb: raw.blurb,
     waMessage: raw.waMessage,
+    image: raw.image ? mapMedia(raw.image) : null,
   };
 }
 
@@ -168,6 +234,7 @@ export interface PayloadKit {
   regular: number;
   note?: string | null;
   tag?: string | null;
+  images?: PayloadGalleryImage[] | null;
 }
 
 function mapKitItem(raw: PayloadKitItem): KitItem {
@@ -191,6 +258,7 @@ export function mapKit(raw: PayloadKit): Kit {
     regular: raw.regular,
     note: raw.note ?? undefined,
     tag: raw.tag ?? undefined,
+    images: raw.images?.map(mapGalleryImage) ?? [],
   };
 }
 
@@ -216,6 +284,7 @@ export interface PayloadFlashDeal {
   stockTotal: number;
   endsAt: number;
   variantGroups: PayloadFlashVariantGroup[];
+  images?: PayloadGalleryImage[] | null;
 }
 
 export function mapFlashDeal(raw: PayloadFlashDeal): FlashDeal {
@@ -234,5 +303,6 @@ export function mapFlashDeal(raw: PayloadFlashDeal): FlashDeal {
       name: g.name,
       values: g.values.map((v) => ({ id: v.slug, label: v.label })),
     })),
+    images: raw.images?.map(mapGalleryImage) ?? [],
   };
 }

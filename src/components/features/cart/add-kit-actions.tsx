@@ -5,12 +5,14 @@ import type { Kit } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCart } from "@/hooks/use-cart";
+import { coverImage, mediaUrl } from "@/lib/images";
 
 export function AddKitActions({ kit, totalPieces }: { kit: Kit; totalPieces: number }) {
   const cart = useCart();
   const [qty, setQty] = useState(1);
 
   const addKit = () => {
+    const media = coverImage(kit.images);
     cart.add({
       key: "kit|" + kit.id,
       id: kit.id,
@@ -22,6 +24,8 @@ export function AddKitActions({ kit, totalPieces }: { kit: Kit; totalPieces: num
       finishLabel: "Combo",
       price: kit.price,
       qty,
+      imageUrl: mediaUrl(media, "thumbnail"),
+      imageAlt: media?.alt,
     });
   };
 

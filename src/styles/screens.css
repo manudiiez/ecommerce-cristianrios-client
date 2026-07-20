@@ -73,7 +73,7 @@
 .cat-chip.wa { border-style: dashed; }
 
 /* ---------- breadcrumb ---------- */
-.crumb { display:flex; gap:8px; align-items:center; font-size: 13px; color: var(--ink-soft); padding-block: 22px 0; }
+.crumb { display:flex; gap:8px; align-items:center; font-size: 13px; color: var(--ink-soft); padding-block: 22px 6px; }
 .crumb a { cursor: pointer; } .crumb a:hover { color: var(--ink); }
 
 /* page banner for category */

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { ProductDetailView } from "@/components/features/product/product-detail-view";
 import { api } from "@/lib/api";
+import type { PriceQuote } from "@/lib/api";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -28,6 +29,16 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const productSizes = worldSizes.filter((s) => product.availableSizes.includes(s.id));
   const initialSizeId = size && product.availableSizes.includes(size) ? size : product.availableSizes[0];
 
+  const priceEntries = await Promise.all(
+    productSizes.flatMap((s) =>
+      product.finishes.map(async (finishId) => {
+        const quote = await api.pricing.quote({ productSlug: product.id, sizeSlug: s.id, finishSlug: finishId });
+        return [`${s.id}|${finishId}`, quote] as const;
+      }),
+    ),
+  );
+  const priceMap: Record<string, PriceQuote> = Object.fromEntries(priceEntries);
+
   return (
     <main className="fade-in" id="main">
       <Crumb
@@ -47,6 +58,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         initialSizeId={initialSizeId}
         related={related}
         categories={categories}
+        priceMap={priceMap}
       />
     </main>
   );

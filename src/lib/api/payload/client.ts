@@ -6,13 +6,29 @@ interface PayloadListResponse<T> {
   nextPage: number | null;
 }
 
-async function payloadFetch<T>(path: string, params: Record<string, string> = {}): Promise<T> {
+export async function payloadFetch<T>(path: string, params: Record<string, string> = {}): Promise<T> {
   const qs = new URLSearchParams(params).toString();
   const res = await fetch(`${PAYLOAD_API_URL}${path}${qs ? `?${qs}` : ""}`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
   return res.json();
+}
+
+export async function payloadPost<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${PAYLOAD_API_URL}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    next: { revalidate: 60 },
+  });
+  if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
+  return res.json();
+}
+
+export async function payloadFind<T>(collection: string, params: Record<string, string> = {}): Promise<T[]> {
+  const data = await payloadFetch<PayloadListResponse<T>>(`/${collection}`, params);
+  return data.docs;
 }
 
 export async function payloadList<T>(collection: string, params: Record<string, string> = {}): Promise<T[]> {
@@ -37,6 +53,7 @@ export async function payloadFindOneBySlug<T>(
   params: Record<string, string> = {},
 ): Promise<T | null> {
   const docs = await payloadList<T>(collection, { "where[slug][equals]": slug, ...params });
+  console.log("payloadFindOneBySlug", collection, slug, JSON.stringify(docs, null, 2));
   return docs[0] ?? null;
 }
 

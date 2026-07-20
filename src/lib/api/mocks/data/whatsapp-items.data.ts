@@ -1,6 +1,6 @@
 import type { WhatsAppItem } from "../../types";
 
-export const whatsappItemsData: WhatsAppItem[] = [
+export const whatsappItemsData: Omit<WhatsAppItem, "image">[] = [
   { id: "sahumerio-sandalo", cat: "sahumerios", name: "Sándalo", blurb: "Caja x20 varillas de Sándalo.", waMessage: "¡Hola! Me interesa: Sándalo (Sahumerios). ¿Tenés stock?" },
   { id: "sahumerio-palo-santo", cat: "sahumerios", name: "Palo Santo", blurb: "Caja x20 varillas de Palo Santo.", waMessage: "¡Hola! Me interesa: Palo Santo (Sahumerios). ¿Tenés stock?" },
   { id: "sahumerio-lavanda", cat: "sahumerios", name: "Lavanda", blurb: "Caja x20 varillas de Lavanda.", waMessage: "¡Hola! Me interesa: Lavanda (Sahumerios). ¿Tenés stock?" },

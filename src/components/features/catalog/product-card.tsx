@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Finish, FinishId, Product, Size } from "@/lib/api";
 import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
+import { coverImage, productImage } from "@/lib/images";
 import { fromPrice, priceFor, worldAccent } from "@/lib/pricing";
 import { ars } from "@/lib/utils";
 
@@ -27,11 +28,12 @@ export function ProductCard({
     : fromPrice(product, allSizes, finishes);
   const sizeLabel = sizeId ? allSizes[sizeId]?.label : null;
   const href = sizeId ? `/producto/${product.id}?size=${sizeId}` : `/producto/${product.id}`;
+  const media = sizeId ? productImage(product.images, sizeId, "crudo") : coverImage(product.images);
 
   return (
     <Link href={href} className="card fade-in" style={{ cursor: "pointer" }}>
       <div style={{ position: "relative" }}>
-        <Placeholder world={product.world} cat={product.cat} label={product.name} style={{ aspectRatio: "4/5" }} />
+        <Placeholder world={product.world} cat={product.cat} label={product.name} media={media} style={{ aspectRatio: "4/5" }} />
         <div className="badges">
           {product.tag && <Pill kind={worldAccent(product.world)}>{product.tag}</Pill>}
           {fp.hasDiscount && product.discount && <Pill kind="sale">{product.discount.label}</Pill>}

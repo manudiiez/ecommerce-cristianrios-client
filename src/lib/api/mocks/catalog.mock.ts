@@ -1,11 +1,18 @@
+import type { WhatsAppItem } from "../types";
 import type { CatalogService } from "../services/catalog.service";
 import { categoriesData } from "./data/categories.data";
 import { finishesData } from "./data/finishes.data";
+import { mockMedia } from "./data/media.mock";
 import { allSizesData, sizesForWorld } from "./data/sizes.data";
 import { whatsappItemsData } from "./data/whatsapp-items.data";
 import { worldsData } from "./data/worlds.data";
 
 const delay = (ms = 150) => new Promise((r) => setTimeout(r, ms));
+
+const allWhatsappItems: WhatsAppItem[] = whatsappItemsData.map((item, i) => ({
+  ...item,
+  image: i % 7 === 6 ? null : mockMedia(`wa-${item.cat}-${item.id}`, item.name),
+}));
 
 export const catalogMock: CatalogService = {
   async getWorlds() {
@@ -34,6 +41,6 @@ export const catalogMock: CatalogService = {
   },
   async getWhatsappItems(catId) {
     await delay();
-    return catId ? whatsappItemsData.filter((i) => i.cat === catId) : whatsappItemsData;
+    return catId ? allWhatsappItems.filter((i) => i.cat === catId) : allWhatsappItems;
   },
 };
