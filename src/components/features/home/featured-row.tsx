@@ -3,6 +3,7 @@ import type { Category, Finish, FinishId, Product, Size, World, WorldId } from "
 import { Ico } from "@/components/ui/icon";
 import { ProductCard } from "@/components/features/catalog/product-card";
 import { worldAccent } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
 
 interface FeaturedRowProps {
   world: WorldId;
@@ -32,8 +33,8 @@ export function FeaturedRow({
       <div className="wrap">
         <div className="sec-head">
           <div>
-            <span className="band-tag">
-              <span className={"dot dot-" + worldAccent(world)}></span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 px-[13px] text-xs font-bold tracking-[0.04em] uppercase">
+              <span className={cn("h-[9px] w-[9px] rounded-full", worldAccent(world) === "clay" ? "bg-clay" : "bg-rose")}></span>
               {w.name}
             </span>
             <span className="kicker" style={{ display: "block", marginTop: 10 }}>

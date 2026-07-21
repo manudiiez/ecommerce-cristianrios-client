@@ -67,9 +67,19 @@ export function Placeholder({
       onClick={onClick}
       role={onClick ? "button" : undefined}
     >
-      <Image src={src} alt={alt} fill sizes="(max-width: 640px) 50vw, 300px" className="ph-img" />
-      <div className="ph-overlay" />
-      {tag && <div className="corner-tag">{tag}</div>}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 640px) 50vw, 300px"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.88]"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.04)_0%,rgba(0,0,0,.3)_100%)]" />
+      {tag && (
+        <div className="absolute top-3 left-3 z-[2] rounded-full bg-surface px-[9px] py-[5px] text-[10px] font-bold tracking-[0.1em] text-ink uppercase shadow-[var(--shadow-brand)]">
+          {tag}
+        </div>
+      )}
     </div>
   );
 }

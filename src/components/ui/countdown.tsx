@@ -15,11 +15,14 @@ export function Countdown({ endsAt }: { endsAt: number }) {
     ["Seg", s],
   ];
   return (
-    <div className="countdown">
+    <div className="flex gap-2.5">
       {cells.map(([lbl, v]) => (
-        <div className="cd-cell" key={lbl}>
-          <b>{pad(v)}</b>
-          <span>{lbl}</span>
+        <div
+          className="min-w-16 rounded border border-[rgba(255,255,255,.18)] bg-[rgba(0,0,0,.28)] py-3 px-1.5 text-center"
+          key={lbl}
+        >
+          <b className="font-display block text-[32px] leading-none font-bold [font-variant-numeric:tabular-nums]">{pad(v)}</b>
+          <span className="text-[10px] tracking-[0.14em] uppercase opacity-75">{lbl}</span>
         </div>
       ))}
     </div>
@@ -29,7 +32,7 @@ export function Countdown({ endsAt }: { endsAt: number }) {
 export function MiniCountdown({ endsAt }: { endsAt: number }) {
   const { d, h, m } = useCountdown(endsAt);
   return (
-    <span className="mini-cd">
+    <span className="text-[11.5px] font-bold [font-variant-numeric:tabular-nums]" style={{ color: "var(--color-flash)" }}>
       ⏱ {d}d {pad(h)}:{pad(m)} restantes
     </span>
   );

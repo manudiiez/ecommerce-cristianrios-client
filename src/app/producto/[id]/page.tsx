@@ -40,7 +40,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const priceMap: Record<string, PriceQuote> = Object.fromEntries(priceEntries);
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },

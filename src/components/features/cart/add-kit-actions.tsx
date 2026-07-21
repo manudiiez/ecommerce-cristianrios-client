@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Kit } from "@/lib/api";
+import { Button } from "@/components/ui/button";
 import { Ico } from "@/components/ui/icon";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCart } from "@/hooks/use-cart";
@@ -30,11 +31,11 @@ export function AddKitActions({ kit, totalPieces }: { kit: Kit; totalPieces: num
   };
 
   return (
-    <div className="pdp-actions" style={{ margin: "18px 0 0" }}>
+    <div className="mb-5 flex flex-wrap items-center gap-3" style={{ margin: "18px 0 0" }}>
       <QtyStepper value={qty} onChange={setQty} />
-      <button className="btn btn-dark" onClick={addKit}>
+      <Button variant="dark" onClick={addKit}>
         <Ico.cart style={{ fontSize: 18 }} /> Agregar kit al pedido
-      </button>
+      </Button>
     </div>
   );
 }

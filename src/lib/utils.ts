@@ -1,10 +1,8 @@
-type ClassValue = string | number | false | null | undefined;
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-/** Joiner de clases livianos — el sitio usa el CSS del design system (clases
- * semánticas + tokens), no utilidades de Tailwind, así que no hace falta
- * tailwind-merge acá. */
 export function cn(...inputs: ClassValue[]) {
-  return inputs.filter(Boolean).join(" ");
+  return twMerge(clsx(inputs));
 }
 
 export function ars(n: number) {

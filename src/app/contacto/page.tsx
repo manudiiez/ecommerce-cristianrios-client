@@ -1,8 +1,9 @@
 import { Crumb } from "@/components/features/catalog/crumb";
 import { Ico, type IconName } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
+import { pillBase, pillKindClass } from "@/components/ui/pill";
 import { api } from "@/lib/api";
-import { mailLink, waLink } from "@/lib/utils";
+import { cn, mailLink, waLink } from "@/lib/utils";
 
 const STEPS: { ic: IconName; t: string; d: string }[] = [
   {
@@ -27,7 +28,7 @@ export default async function ContactoPage() {
   const store = await api.store.get();
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb trail={[{ label: "Inicio", href: "/" }, { label: "Cómo comprar" }]} />
       <div className="wrap cat-banner">
         <span className="kicker">Sin pago online</span>
@@ -71,7 +72,7 @@ export default async function ContactoPage() {
                 <h3 className="display" style={{ fontSize: 21, margin: "0 0 6px" }}>
                   {s.t}
                 </h3>
-                <p className="muted" style={{ fontSize: 14, margin: 0 }}>
+                <p className="text-ink-soft" style={{ fontSize: 14, margin: 0 }}>
                   {s.d}
                 </p>
               </div>
@@ -82,7 +83,7 @@ export default async function ContactoPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 40 }} className="contact-cards">
           <div className="wa-hero" style={{ margin: 0 }}>
             <div className="tex"></div>
-            <span className="pill pill-wa" style={{ position: "relative" }}>
+            <span className={cn(pillBase, pillKindClass.wa)} style={{ position: "relative" }}>
               <Ico.wa style={{ fontSize: 15 }} /> Lo más rápido
             </span>
             <h2 className="display" style={{ fontSize: 30, margin: "10px 0", color: "#fff" }}>

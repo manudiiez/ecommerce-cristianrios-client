@@ -6,7 +6,7 @@ export default async function KitsPage() {
   const kits = await api.kits.getAll();
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb trail={[{ label: "Inicio", href: "/" }, { label: "Kits y combos" }]} />
       <div className="wrap cat-banner">
         <span className="kicker">Combos a precio menor</span>

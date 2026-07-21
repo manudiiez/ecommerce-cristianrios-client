@@ -7,7 +7,7 @@ import { LinkButton } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
 import { api } from "@/lib/api";
 import { coverImage } from "@/lib/images";
-import { ars, waLink } from "@/lib/utils";
+import { ars, cn, waLink } from "@/lib/utils";
 
 export default async function KitDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -27,7 +27,7 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
   const collageCats = kit.world === "religioso" ? ["jesus", "virgen", "santos"] : ["budas", "elefantes", "hornillos"];
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },
@@ -35,9 +35,9 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
           { label: kit.name },
         ]}
       />
-      <div className="wrap kit-hero">
+      <div className="wrap grid grid-cols-[1.1fr_1fr] items-center gap-11 py-[26px] max-[880px]:grid-cols-1">
         <div>
-          <div className="kit-collage">
+          <div className="grid aspect-square grid-cols-2 grid-rows-2 gap-3">
             {collageCats.map((cat, i) => (
               <Placeholder
                 key={cat}
@@ -46,26 +46,28 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
                 label={i === 0 ? "Kit" : ""}
                 offset={i}
                 media={kit.images.length ? (kit.images[i % kit.images.length]?.image ?? coverImage(kit.images)) : undefined}
+                className={i === 0 ? "row-span-2" : undefined}
               />
             ))}
           </div>
         </div>
         <div>
-          <span className="kicker" style={{ color: kit.world === "religioso" ? "var(--clay-deep)" : "var(--rose-deep)" }}>
+          <span className="kicker" style={{ color: kit.world === "religioso" ? "var(--color-clay-deep)" : "var(--color-rose-deep)" }}>
             Kit · {w.name}
           </span>
           <h1 className="display" style={{ margin: "8px 0" }}>
             {kit.name}
           </h1>
-          <p className="muted" style={{ fontSize: 16, maxWidth: "42ch" }}>
+          <p className="text-ink-soft" style={{ fontSize: 16, maxWidth: "42ch" }}>
             {kit.blurb}
           </p>
 
-          <div className="kit-items">
+          <div className="my-[22px] flex flex-col gap-3">
             {kit.items.map((it, i) => {
               const product = itemProducts[i];
               const size = it.sizeId ? allSizes[it.sizeId] : undefined;
               const finish = it.finishId ? finishes[it.finishId] : undefined;
+              const itemClass = "flex items-center gap-4 rounded-lg border border-line bg-surface py-3 px-3.5";
 
               const content = (
                 <>
@@ -80,51 +82,51 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
                   <div>
                     <b style={{ fontWeight: 600 }}>{it.name}</b>
                     {(size || finish) && (
-                      <div className="kit-item-opts">
+                      <div className="mt-0.5 text-[13px] text-ink-soft">
                         {size?.label}
                         {size && finish ? " · " : ""}
                         {finish?.label}
                       </div>
                     )}
                   </div>
-                  <span className="qb">×{it.qty}</span>
+                  <span className="ml-auto rounded-full bg-paper-2 py-1.5 px-[13px] text-[15px] font-extrabold">×{it.qty}</span>
                 </>
               );
 
               if (product) {
                 const href = it.sizeId ? `/producto/${product.id}?size=${it.sizeId}` : `/producto/${product.id}`;
                 return (
-                  <Link className="kit-item kit-item-link" href={href} key={i}>
+                  <Link className={cn(itemClass, "text-inherit no-underline hover:border-ink")} href={href} key={i}>
                     {content}
                   </Link>
                 );
               }
 
               return (
-                <div className="kit-item" key={i}>
+                <div className={itemClass} key={i}>
                   {content}
                 </div>
               );
             })}
           </div>
 
-          <div className="kit-price-box">
-            <div className="pl">
+          <div className="rounded-lg border border-line bg-surface p-[26px] shadow-[var(--shadow-brand)]">
+            <div className="flex justify-between py-1.5 text-sm text-ink-soft">
               <span>Comprado por separado (aprox.)</span>
               <span style={{ textDecoration: "line-through" }}>{ars(kit.regular)}</span>
             </div>
-            <div className="pl" style={{ color: "var(--flash)", fontWeight: 700 }}>
+            <div className="flex justify-between py-1.5 text-sm text-ink-soft" style={{ color: "var(--color-flash)", fontWeight: 700 }}>
               <span>Ahorro del combo</span>
               <span>
                 − {ars(save)} ({pct}%)
               </span>
             </div>
-            <div className="pl total">
+            <div className="mt-2 flex items-baseline justify-between border-t border-line pt-3.5 text-[17px] text-ink">
               <span>Precio del kit</span>
-              <b>{ars(kit.price)}</b>
+              <b className="font-display text-[34px] font-semibold">{ars(kit.price)}</b>
             </div>
             {kit.note && (
-              <div className="cart-note" style={{ marginBottom: 0 }}>
+              <div className="mt-4 flex gap-2.5 rounded bg-paper-2 py-3.5 px-4 text-[13px] text-ink-soft">
                 <Ico.spark style={{ fontSize: 16, flexShrink: 0, marginTop: 1 }} /> {kit.note}
               </div>
             )}

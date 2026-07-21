@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { FlashDeal } from "@/lib/api";
 import { Countdown } from "@/components/ui/countdown";
 import { Ico } from "@/components/ui/icon";
+import { btnBase } from "@/components/ui/button";
+import { pillBase } from "@/components/ui/pill";
 import { ars } from "@/lib/utils";
 
 export function FlashTeaser({ deal }: { deal: FlashDeal }) {
@@ -13,13 +15,13 @@ export function FlashTeaser({ deal }: { deal: FlashDeal }) {
         <div className="flash-banner">
           <div className="stripes"></div>
           <div style={{ position: "relative" }}>
-            <span className="pill" style={{ background: "rgba(0,0,0,.25)", color: "#fff" }}>
+            <span className={pillBase} style={{ background: "rgba(0,0,0,.25)", color: "#fff" }}>
               <Ico.bolt style={{ fontSize: 13 }} /> {deal.kicker}
             </span>
             <h3>{deal.name}</h3>
             <p>{deal.blurb}</p>
             <div style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 18, flexWrap: "wrap" }}>
-              <Link href="/ofertas-flash" className="btn" style={{ background: "#fff", color: "#b8210f" }}>
+              <Link href="/ofertas-flash" className={btnBase} style={{ background: "#fff", color: "#b8210f" }}>
                 Ver Ofertas Flash <Ico.arrow />
               </Link>
               <span style={{ color: "#fff", fontWeight: 700 }}>

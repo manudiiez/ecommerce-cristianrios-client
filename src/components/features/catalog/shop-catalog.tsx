@@ -33,18 +33,21 @@ export function ShopCatalog({
   return (
     <>
       <div className="sec-head" style={{ marginBottom: 16, alignItems: "center" }}>
-        <p className="muted" style={{ fontSize: 13, margin: 0, display: "inline-flex", gap: 7, alignItems: "center" }}>
+        <p className="text-ink-soft" style={{ fontSize: 13, margin: 0, display: "inline-flex", gap: 7, alignItems: "center" }}>
           <Ico.ruler style={{ fontSize: 15 }} /> Catálogo organizado por tamaño · Precio igual para todas las
           figuras del mismo tamaño
         </p>
-        <button className="filters-toggle" onClick={() => setShowFilters((s) => !s)}>
+        <button
+          className="hidden cursor-pointer items-center gap-2 rounded-full border-[1.5px] border-line-strong bg-surface py-[10px] px-4 text-sm font-semibold max-[880px]:inline-flex"
+          onClick={() => setShowFilters((s) => !s)}
+        >
           <Ico.box style={{ fontSize: 16 }} /> Filtros {f.activeCount > 0 ? `(${f.activeCount})` : ""}
         </button>
       </div>
 
       <ActiveFilterChips f={f} categories={categories} />
 
-      <div className="shop-layout">
+      <div className="grid grid-cols-[248px_1fr] items-start gap-9 max-[880px]:grid-cols-1 max-[880px]:gap-[18px]">
         <FiltersSidebar f={f} worldCats={worldCats} worldSizes={worldSizes} world={world} collapsed={!showFilters} />
         <div>
           <SizeCatalog

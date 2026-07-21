@@ -7,6 +7,10 @@ import { Pill } from "@/components/ui/pill";
 import { Ico } from "@/components/ui/icon";
 import { api } from "@/lib/api";
 import { worldAccent } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
+
+const catChipClass =
+  "inline-flex cursor-pointer items-center gap-2 rounded-full border border-line-strong bg-surface py-[9px] px-[15px] text-[13.5px] font-semibold transition duration-150 hover:border-ink";
 
 export default async function CategoryPage({ params }: { params: Promise<{ cat: string }> }) {
   const { cat: catId } = await params;
@@ -32,7 +36,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
   const accent = worldAccent(category.world);
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },
@@ -42,7 +46,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
       />
 
       <div className={"world-band " + category.world}>
-        <div className="wrap cat-banner">
+        <div className="mx-auto max-w-[1240px] px-7 max-[640px]:px-[18px] cat-banner">
           <span className="kicker" style={{ color: accent === "clay" ? "var(--clay-deep)" : "var(--rose-deep)" }}>
             {w.name}
           </span>
@@ -58,19 +62,29 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
         </div>
       </div>
 
-      <div className="wrap" style={{ padding: "22px 28px 0" }}>
-        <div className="cat-chips">
-          {siblings.map((s) => (
-            <Link key={s.id} href={`/categoria/${s.id}`} className={"cat-chip " + (s.id === catId ? "active" : "")}>
-              {s.name} <span className="n">{s.count}</span>
-            </Link>
-          ))}
+      <div className="mx-auto max-w-[1240px] px-7 max-[640px]:px-[18px]" style={{ padding: "22px 28px 0" }}>
+        <div className="flex flex-wrap gap-[10px]">
+          {siblings.map((s) => {
+            const active = s.id === catId;
+            return (
+              <Link
+                key={s.id}
+                href={`/categoria/${s.id}`}
+                className={cn(catChipClass, active && "border-ink bg-ink text-paper")}
+              >
+                {s.name}{" "}
+                <span className={active ? "text-[color-mix(in_oklab,var(--color-paper)_70%,transparent)] font-medium" : "font-medium text-ink-soft"}>
+                  {s.count}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
-      <div className="wrap section" style={{ paddingTop: 26 }}>
+      <div className="mx-auto max-w-[1240px] px-7 max-[640px]:px-[18px] section" style={{ paddingTop: 26 }}>
         <div className="sec-head" style={{ marginBottom: 16, alignItems: "center" }}>
-          <p className="muted" style={{ fontSize: 13, margin: 0, display: "inline-flex", gap: 7, alignItems: "center" }}>
+          <p className="text-ink-soft" style={{ fontSize: 13, margin: 0, display: "inline-flex", gap: 7, alignItems: "center" }}>
             <Ico.ruler style={{ fontSize: 15 }} /> Organizado por tamaño
           </p>
         </div>
@@ -85,9 +99,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
             categories={categories}
           />
         ) : (
-          <div className="empty-state">
-            <div className="ring">∅</div>
-            <p className="muted">Pronto cargamos productos en esta categoría.</p>
+          <div className="px-5 py-20 text-center">
+            <div className="mx-auto mb-5 flex h-[88px] w-[88px] rotate-[-4deg] items-center justify-center rounded-full border-[1.5px] border-line-strong font-script text-[46px] text-ink-soft">
+              ∅
+            </div>
+            <p className="text-ink-soft">Pronto cargamos productos en esta categoría.</p>
           </div>
         )}
       </div>

@@ -49,7 +49,7 @@ export default async function HomePage() {
       />
       {soonestFlash && <FlashTeaser deal={soonestFlash} />}
       <KitsTeaser kits={kits} />
-      <hr className="divider" />
+      <hr className="h-px border-0 bg-line" />
       <WaTeaser categories={categories} />
     </main>
   );

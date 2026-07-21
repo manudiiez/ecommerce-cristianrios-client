@@ -3,7 +3,8 @@ import { Crumb } from "@/components/features/catalog/crumb";
 import { Ico } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
-import { waLink } from "@/lib/utils";
+import { pillBase, pillKindClass } from "@/components/ui/pill";
+import { cn, waLink } from "@/lib/utils";
 
 export function WhatsappCategory({
   category,
@@ -17,7 +18,7 @@ export function WhatsappCategory({
   const consultaMsg = `¡Hola Hanna! Quería consultar por ${category.name} 🙏\n¿Qué opciones/stock tenés disponible hoy?`;
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },
@@ -28,7 +29,7 @@ export function WhatsappCategory({
       <div className="wrap">
         <div className="wa-hero">
           <div className="tex"></div>
-          <span className="pill pill-wa" style={{ position: "relative" }}>
+          <span className={cn(pillBase, pillKindClass.wa)} style={{ position: "relative" }}>
             <Ico.wa style={{ fontSize: 15 }} /> Solo por WhatsApp
           </span>
           <h1 className="display">{category.name}</h1>
@@ -44,7 +45,7 @@ export function WhatsappCategory({
           <Ico.chat style={{ fontSize: 20, color: "#128C4B", flexShrink: 0, marginTop: 2 }} />
           <div>
             <b>¿Por qué no está en el catálogo?</b>
-            <p className="muted" style={{ margin: "4px 0 0", fontSize: 13.5 }}>
+            <p className="text-ink-soft" style={{ margin: "4px 0 0", fontSize: 13.5 }}>
               Los aromáticos cambian seguido y muchos van por encargo. Para no mostrarte algo sin stock,
               preferimos confirmarte todo al instante por chat.
             </p>
@@ -67,10 +68,10 @@ export function WhatsappCategory({
             >
               <Placeholder world={category.world} cat={category.id} label={item.name} offset={i} media={item.image} />
               <span className="nm">{item.name}</span>
-              <span className="muted" style={{ fontSize: 12, display: "block" }}>
+              <span className="text-ink-soft" style={{ fontSize: 12, display: "block" }}>
                 {item.blurb}
               </span>
-              <span className="muted" style={{ fontSize: 12.5, display: "inline-flex", gap: 6, alignItems: "center" }}>
+              <span className="text-ink-soft" style={{ fontSize: 12.5, display: "inline-flex", gap: 6, alignItems: "center" }}>
                 <Ico.wa style={{ fontSize: 13, color: "#25D366" }} /> Consultar
               </span>
             </a>

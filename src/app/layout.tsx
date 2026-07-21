@@ -39,7 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="es" className={`${cormorant.variable} ${jost.variable} ${pinyon.variable}`}>
       <body>
-        <a className="skip-link" href="#main">
+        <a className="absolute -left-[999px]" href="#main">
           Saltar al contenido
         </a>
         <CartProvider>
