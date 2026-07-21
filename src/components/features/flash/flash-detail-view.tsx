@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FlashDeal } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Ico } from "@/components/ui/icon";
+import { Lightbox } from "@/components/ui/lightbox";
 import { Placeholder } from "@/components/ui/placeholder";
 import { pillBase, pillKindClass } from "@/components/ui/pill";
 import { QtyStepper } from "@/components/ui/qty-stepper";
@@ -23,6 +24,7 @@ export function FlashDetailView({ deal }: { deal: FlashDeal }) {
   );
   const [qty, setQty] = useState(1);
   const [mainIdx, setMainIdx] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const hasImages = deal.images.length > 0;
 
   const selectedValues = deal.variantGroups.map(
@@ -49,6 +51,14 @@ export function FlashDetailView({ deal }: { deal: FlashDeal }) {
 
   return (
     <div className="wrap grid grid-cols-2 items-start gap-[50px] pt-[26px] pb-2.5 max-[880px]:grid-cols-1 max-[880px]:gap-7">
+      {hasImages && lightboxIndex !== null && (
+        <Lightbox
+          images={deal.images.map((i) => i.image)}
+          index={lightboxIndex}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
       <div className="sticky top-[90px] flex flex-col gap-3 max-[880px]:static">
         {hasImages ? (
           <>
@@ -57,7 +67,9 @@ export function FlashDetailView({ deal }: { deal: FlashDeal }) {
               label={deal.name}
               media={deal.images[mainIdx]?.image}
               variant="large"
-              style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
+              zoomable
+              style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)", cursor: "pointer" }}
+              onClick={() => setLightboxIndex(mainIdx)}
             />
             <div className="grid grid-cols-4 gap-3">
               {deal.images.map((img, i) => (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { AddKitActions } from "@/components/features/cart/add-kit-actions";
+import { KitGallery } from "@/components/features/kits/kit-gallery";
 import { Ico } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
@@ -37,19 +38,7 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
       />
       <div className="wrap grid grid-cols-[1.1fr_1fr] items-center gap-11 py-[26px] max-[880px]:grid-cols-1">
         <div>
-          <div className="grid aspect-square grid-cols-2 grid-rows-2 gap-3">
-            {collageCats.map((cat, i) => (
-              <Placeholder
-                key={cat}
-                world={kit.world}
-                cat={cat}
-                label={i === 0 ? "Kit" : ""}
-                offset={i}
-                media={kit.images.length ? (kit.images[i % kit.images.length]?.image ?? coverImage(kit.images)) : undefined}
-                className={i === 0 ? "row-span-2" : undefined}
-              />
-            ))}
-          </div>
+          <KitGallery world={kit.world} collageCats={collageCats} images={kit.images} />
         </div>
         <div>
           <span className="kicker" style={{ color: kit.world === "religioso" ? "var(--color-clay-deep)" : "var(--color-rose-deep)" }}>

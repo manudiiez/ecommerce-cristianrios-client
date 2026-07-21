@@ -5,6 +5,7 @@ import type { Category, Finish, FinishId, PriceQuote, Product, Size } from "@/li
 import { ProductCard } from "@/components/features/catalog/product-card";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Ico } from "@/components/ui/icon";
+import { Lightbox } from "@/components/ui/lightbox";
 import { Pill } from "@/components/ui/pill";
 import { Placeholder } from "@/components/ui/placeholder";
 import { QtyStepper } from "@/components/ui/qty-stepper";
@@ -48,6 +49,7 @@ export function ProductDetailView({
   const [qty, setQty] = useState(1);
   const [legacyIdx, setLegacyIdx] = useState(0);
   const [manualSelection, setManualSelection] = useState<{ key: string; idx: number } | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const selectionKey = `${sizeId}|${finishId}`;
 
   const hasImages = product.images.length > 0;
@@ -77,6 +79,14 @@ export function ProductDetailView({
 
   return (
     <>
+      {hasImages && lightboxIndex !== null && (
+        <Lightbox
+          images={product.images.map((i) => i.image)}
+          index={lightboxIndex}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
       <div className="wrap grid grid-cols-2 items-start gap-[50px] pt-[26px] pb-2.5 max-[880px]:grid-cols-1 max-[880px]:gap-7">
         {/* Galería */}
         <div className="sticky top-[90px] flex flex-col gap-3 max-[880px]:static">
@@ -89,7 +99,9 @@ export function ProductDetailView({
                 tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
                 media={product.images[mainIdx]?.image}
                 variant="large"
-                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)" }}
+                zoomable
+                style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)", cursor: "pointer" }}
+                onClick={() => setLightboxIndex(mainIdx)}
               />
               <div className="grid grid-cols-4 gap-3">
                 {product.images.map((img, i) => (

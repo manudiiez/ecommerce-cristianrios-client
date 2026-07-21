@@ -50,25 +50,27 @@ export function Header({ onMenu }: { onMenu: () => void }) {
             Contacto
           </Link>
         </nav>
-        <Link
-          href="/pedido"
-          className="relative inline-flex items-center gap-2 rounded-full border-0 bg-ink py-[9px] px-4 text-[13.5px] font-semibold text-paper transition duration-150 hover:-translate-y-px"
-        >
-          <Ico.cart style={{ fontSize: 18 }} />
-          Pedido
-          {cart.count > 0 && (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-deep px-[5px] text-[11.5px] font-bold text-white">
-              {cart.count}
-            </span>
-          )}
-        </Link>
-        <button
-          className="hidden max-[860px]:ml-auto max-[860px]:inline-flex max-[860px]:h-[42px] max-[860px]:w-[42px] max-[860px]:cursor-pointer max-[860px]:items-center max-[860px]:justify-center max-[860px]:rounded max-[860px]:border max-[860px]:border-line-strong max-[860px]:bg-surface"
-          onClick={onMenu}
-          aria-label="Menú"
-        >
-          <Ico.menu style={{ fontSize: 22 }} />
-        </button>
+        <div className="flex items-center gap-2 max-[860px]:ml-auto">
+          <Link
+            href="/pedido"
+            className="relative inline-flex items-center gap-2 rounded-full border-0 bg-ink py-[9px] px-4 text-[13.5px] font-semibold text-paper transition duration-150 hover:-translate-y-px max-[860px]:px-3"
+          >
+            <Ico.cart style={{ fontSize: 18 }} />
+            <span className="max-[860px]:hidden">Pedido</span>
+            {cart.count > 0 && (
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-deep px-[5px] text-[11.5px] font-bold text-white">
+                {cart.count}
+              </span>
+            )}
+          </Link>
+          <button
+            className="hidden max-[860px]:inline-flex max-[860px]:h-[42px] max-[860px]:w-[42px] max-[860px]:cursor-pointer max-[860px]:items-center max-[860px]:justify-center max-[860px]:rounded max-[860px]:border max-[860px]:border-line-strong max-[860px]:bg-surface"
+            onClick={onMenu}
+            aria-label="Menú"
+          >
+            <Ico.menu style={{ fontSize: 22 }} />
+          </button>
+        </div>
       </div>
       <div className="border-t border-line max-[860px]:hidden">
         <div className="mx-auto flex h-11 max-w-[1240px] items-center gap-[26px] px-7 text-[13px] max-[640px]:px-[18px]">

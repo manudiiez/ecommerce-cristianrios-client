@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import type { Media } from "@/lib/api";
+import { Ico } from "@/components/ui/icon";
 import { mediaUrl } from "@/lib/images";
 
 type Cat = string | undefined;
@@ -40,6 +41,7 @@ interface PlaceholderProps {
   onClick?: () => void;
   media?: Media | null;
   variant?: "thumbnail" | "large";
+  zoomable?: boolean;
 }
 
 export function Placeholder({
@@ -55,6 +57,7 @@ export function Placeholder({
   onClick,
   media,
   variant = "thumbnail",
+  zoomable,
 }: PlaceholderProps) {
   const t = tint || tintFor(world, cat);
   const classes = ["ph", className, active ? "active" : undefined].filter(Boolean).join(" ");
@@ -78,6 +81,11 @@ export function Placeholder({
       {tag && (
         <div className="absolute top-3 left-3 z-[2] rounded-full bg-surface px-[9px] py-[5px] text-[10px] font-bold tracking-[0.1em] text-ink uppercase shadow-[var(--shadow-brand)]">
           {tag}
+        </div>
+      )}
+      {zoomable && (
+        <div className="pointer-events-none absolute right-3 bottom-3 z-[2] flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm">
+          <Ico.expand style={{ fontSize: 15 }} />
         </div>
       )}
     </div>
