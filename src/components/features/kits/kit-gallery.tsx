@@ -31,6 +31,8 @@ export function KitGallery({
               label={i === 0 ? "Kit" : ""}
               offset={i}
               media={hasImages ? (images[imgIdx!]?.image ?? coverImage(images)) : undefined}
+              variant="large"
+              sizes="(max-width: 880px) 50vw, 25vw"
               className={i === 0 ? "row-span-2" : undefined}
               zoomable={hasImages}
               style={hasImages ? { cursor: "pointer" } : undefined}

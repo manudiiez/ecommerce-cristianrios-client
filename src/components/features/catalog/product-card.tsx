@@ -38,6 +38,8 @@ export function ProductCard({
           cat={product.cat}
           label={product.name}
           media={media}
+          variant="large"
+          sizes="(max-width: 820px) 50vw, (max-width: 1080px) 33vw, 25vw"
           style={{ aspectRatio: "4/5" }}
           className="group-hover:shadow-[var(--shadow-brand)]"
         />

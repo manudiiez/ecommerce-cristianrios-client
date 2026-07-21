@@ -41,6 +41,7 @@ interface PlaceholderProps {
   onClick?: () => void;
   media?: Media | null;
   variant?: "thumbnail" | "large";
+  sizes?: string;
   zoomable?: boolean;
 }
 
@@ -57,6 +58,7 @@ export function Placeholder({
   onClick,
   media,
   variant = "thumbnail",
+  sizes = "(max-width: 640px) 50vw, 300px",
   zoomable,
 }: PlaceholderProps) {
   const t = tint || tintFor(world, cat);
@@ -74,7 +76,7 @@ export function Placeholder({
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 640px) 50vw, 300px"
+        sizes={sizes}
         className="absolute inset-0 h-full w-full object-cover opacity-[0.88]"
       />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.04)_0%,rgba(0,0,0,.3)_100%)]" />

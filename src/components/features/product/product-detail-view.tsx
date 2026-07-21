@@ -99,6 +99,7 @@ export function ProductDetailView({
                 tag={finishId === "pintada" ? "Pintada a mano" : "Yeso natural"}
                 media={product.images[mainIdx]?.image}
                 variant="large"
+                sizes="(max-width: 880px) 100vw, 50vw"
                 zoomable
                 style={{ aspectRatio: "1", borderRadius: "var(--radius-lg)", cursor: "pointer" }}
                 onClick={() => setLightboxIndex(mainIdx)}
