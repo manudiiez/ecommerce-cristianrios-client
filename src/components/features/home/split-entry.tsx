@@ -29,7 +29,7 @@ export function SplitEntry({ worlds, categories, store }: SplitEntryProps) {
       >
         <Link href={`/${world.id}`} style={{ position: "absolute", inset: 0, zIndex: 2 }} aria-label={`Entrar a ${world.name}`} />
         <div className="tex"></div>
-        <div className="split-inner relative ml-auto max-w-[460px]">
+        <div className="split-inner relative mx-auto sm:ml-auto max-w-[460px]">
           <span className="inline-block rounded-full border border-[rgba(255,255,255,.35)] py-1.5 px-3 text-[11px] font-bold tracking-[0.24em] uppercase opacity-90">
             {world.kicker}
           </span>
