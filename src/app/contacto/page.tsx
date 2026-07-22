@@ -1,8 +1,9 @@
 import { Crumb } from "@/components/features/catalog/crumb";
 import { Ico, type IconName } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
+import { pillBase, pillKindClass } from "@/components/ui/pill";
 import { api } from "@/lib/api";
-import { mailLink, waLink } from "@/lib/utils";
+import { cn, mailLink, waLink } from "@/lib/utils";
 
 const STEPS: { ic: IconName; t: string; d: string }[] = [
   {
@@ -27,7 +28,7 @@ export default async function ContactoPage() {
   const store = await api.store.get();
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb trail={[{ label: "Inicio", href: "/" }, { label: "Cómo comprar" }]} />
       <div className="wrap cat-banner">
         <span className="kicker">Sin pago online</span>
@@ -71,7 +72,7 @@ export default async function ContactoPage() {
                 <h3 className="display" style={{ fontSize: 21, margin: "0 0 6px" }}>
                   {s.t}
                 </h3>
-                <p className="muted" style={{ fontSize: 14, margin: 0 }}>
+                <p className="text-ink-soft" style={{ fontSize: 14, margin: 0 }}>
                   {s.d}
                 </p>
               </div>
@@ -82,18 +83,18 @@ export default async function ContactoPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 40 }} className="contact-cards">
           <div className="wa-hero" style={{ margin: 0 }}>
             <div className="tex"></div>
-            <span className="pill pill-wa" style={{ position: "relative" }}>
+            <span className={cn(pillBase, pillKindClass.wa)} style={{ position: "relative" }}>
               <Ico.wa style={{ fontSize: 15 }} /> Lo más rápido
             </span>
             <h2 className="display" style={{ fontSize: 30, margin: "10px 0", color: "#fff" }}>
               Escribinos por WhatsApp
             </h2>
-            <p style={{ position: "relative" }}>{store.whatsappDisplay} · respondemos en el día.</p>
+            <p style={{ position: "relative" }}>{store.whatsappDisplay ?? store.whatsapp} · respondemos en el día.</p>
             <LinkButton
               variant="wa"
               size="lg"
               style={{ position: "relative" }}
-              href={waLink("¡Hola Hanna! Quería hacer una consulta 🙂")}
+              href={waLink(store.whatsapp, `¡Hola ${store.name}! Quería hacer una consulta 🙂`)}
               target="_blank"
               rel="noreferrer"
             >
@@ -118,11 +119,11 @@ export default async function ContactoPage() {
               Por email o Instagram
             </h2>
             <p style={{ opacity: 0.85, margin: "0 0 8px" }}>{store.email}</p>
-            <p style={{ opacity: 0.85, margin: "0 0 20px" }}>{store.instagram}</p>
+            {store.instagram && <p style={{ opacity: 0.85, margin: "0 0 20px" }}>{store.instagram}</p>}
             <LinkButton
               variant="ghost"
               style={{ borderColor: "rgba(255,255,255,.3)", color: "var(--paper)", alignSelf: "flex-start" }}
-              href={mailLink("Consulta", "Hola Hanna,")}
+              href={mailLink(store.email, "Consulta", `Hola ${store.name},`)}
             >
               <Ico.mail style={{ fontSize: 18 }} /> Escribir email
             </LinkButton>

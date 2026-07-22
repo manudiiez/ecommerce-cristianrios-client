@@ -9,7 +9,7 @@ export default async function FlashDetailPage({ params }: { params: Promise<{ id
   if (!deal) notFound();
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },

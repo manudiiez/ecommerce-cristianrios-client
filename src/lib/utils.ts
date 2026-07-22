@@ -1,23 +1,18 @@
-type ClassValue = string | number | false | null | undefined;
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-/** Joiner de clases livianos — el sitio usa el CSS del design system (clases
- * semánticas + tokens), no utilidades de Tailwind, así que no hace falta
- * tailwind-merge acá. */
 export function cn(...inputs: ClassValue[]) {
-  return inputs.filter(Boolean).join(" ");
+  return twMerge(clsx(inputs));
 }
 
 export function ars(n: number) {
   return "$" + n.toLocaleString("es-AR", { maximumFractionDigits: 0 });
 }
 
-const STORE_WHATSAPP = "5492610000000";
-const STORE_EMAIL = "hola@hannayesos.com.ar";
-
-export function waLink(text: string) {
-  return `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(text)}`;
+export function waLink(phone: string, text: string) {
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 
-export function mailLink(subject: string, body: string) {
-  return `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+export function mailLink(email: string, subject: string, body: string) {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

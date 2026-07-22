@@ -2,7 +2,11 @@ import Link from "next/link";
 import type { Category, Finish, FinishId, Product, Size, World, WorldId } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { ProductCard } from "@/components/features/catalog/product-card";
+import { FeaturedCarousel } from "@/components/features/home/featured-carousel";
 import { worldAccent } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 4;
 
 interface FeaturedRowProps {
   world: WorldId;
@@ -32,8 +36,8 @@ export function FeaturedRow({
       <div className="wrap">
         <div className="sec-head">
           <div>
-            <span className="band-tag">
-              <span className={"dot dot-" + worldAccent(world)}></span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 px-[13px] text-xs font-bold tracking-[0.04em] uppercase">
+              <span className={cn("h-[9px] w-[9px] rounded-full", worldAccent(world) === "clay" ? "bg-clay" : "bg-rose")}></span>
               {w.name}
             </span>
             <span className="kicker" style={{ display: "block", marginTop: 10 }}>
@@ -45,21 +49,25 @@ export function FeaturedRow({
             Ver todo {w.name} <Ico.arrow />
           </Link>
         </div>
-        <div className="grid grid-4">
-          {products.map((p) => {
-            const cat = categories.find((c) => c.id === p.cat);
-            return (
-              <ProductCard
-                key={p.id}
-                product={p}
-                categoryName={cat?.name ?? ""}
-                categoryHasDiscount={!!cat?.discount}
-                allSizes={allSizes}
-                finishes={finishes}
-              />
-            );
-          })}
-        </div>
+        {products.length > PAGE_SIZE ? (
+          <FeaturedCarousel world={world} products={products} categories={categories} allSizes={allSizes} finishes={finishes} />
+        ) : (
+          <div className="grid grid-4">
+            {products.map((p) => {
+              const cat = categories.find((c) => c.id === p.cat);
+              return (
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  categoryName={cat?.name ?? ""}
+                  categoryHasDiscount={!!cat?.discount}
+                  allSizes={allSizes}
+                  finishes={finishes}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

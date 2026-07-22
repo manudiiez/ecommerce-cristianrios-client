@@ -12,7 +12,7 @@ export function CartLineItem({ item }: { item: CartLine }) {
   const isSpecial = item.cat === "kit" || item.cat === "flash";
 
   return (
-    <div className="cart-line">
+    <div className="grid grid-cols-[92px_1fr_auto] items-center gap-[18px] border-b border-line py-[18px]">
       {item.imageUrl ? (
         <div style={{ position: "relative", width: 92, height: 92, borderRadius: "var(--radius)", flexShrink: 0, overflow: "hidden" }}>
           <Image src={item.imageUrl} alt={item.imageAlt || item.name} fill sizes="92px" style={{ objectFit: "cover" }} />
@@ -27,18 +27,18 @@ export function CartLineItem({ item }: { item: CartLine }) {
         />
       )}
       <div>
-        <div className="cl-name">{item.name}</div>
-        <div className="cl-opts">
+        <div className="font-display text-[19px] font-medium">{item.name}</div>
+        <div className="mt-0.5 text-[13px] text-ink-soft">
           {item.sizeLabel}
           {item.finishLabel ? ` · ${item.finishLabel}` : ""}
         </div>
-        <span className="cl-remove" onClick={() => cart.remove(item.key)}>
+        <span className="mt-2 inline-block cursor-pointer text-[12.5px] text-ink-soft hover:text-flash" onClick={() => cart.remove(item.key)}>
           Quitar
         </span>
       </div>
-      <div className="cl-right">
-        <QtyStepper value={item.qty} onChange={(q) => cart.setQty(item.key, q)} />
-        <div className="cl-price">{ars(item.price * item.qty)}</div>
+      <div className="flex flex-col items-end gap-2 text-right">
+        <QtyStepper value={item.qty} min={0} onChange={(q) => cart.setQty(item.key, q)} />
+        <div className="text-base font-bold">{ars(item.price * item.qty)}</div>
       </div>
     </div>
   );

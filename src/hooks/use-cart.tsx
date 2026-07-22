@@ -72,7 +72,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const setQty = useCallback((key: string, qty: number) => {
-    setItems((prev) => prev.map((p) => (p.key === key ? { ...p, qty: Math.max(1, qty) } : p)));
+    if (qty <= 0) {
+      setItems((prev) => prev.filter((p) => p.key !== key));
+      return;
+    }
+    setItems((prev) => prev.map((p) => (p.key === key ? { ...p, qty } : p)));
   }, []);
 
   const remove = useCallback((key: string) => {

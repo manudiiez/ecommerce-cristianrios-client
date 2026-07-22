@@ -6,13 +6,28 @@ interface PayloadListResponse<T> {
   nextPage: number | null;
 }
 
-export async function payloadFetch<T>(path: string, params: Record<string, string> = {}): Promise<T> {
+export async function payloadFetch<T>(
+  path: string,
+  params: Record<string, string> = {},
+  options: { revalidate?: number } = {},
+): Promise<T> {
   const qs = new URLSearchParams(params).toString();
   const res = await fetch(`${PAYLOAD_API_URL}${path}${qs ? `?${qs}` : ""}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: options.revalidate ?? 60 },
   });
   if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
   return res.json();
+}
+
+async function readErrorMessage(res: Response): Promise<string> {
+  try {
+    const data = await res.json();
+    if (typeof data?.message === "string") return data.message;
+    if (Array.isArray(data?.errors) && typeof data.errors[0]?.message === "string") return data.errors[0].message;
+  } catch {
+    // el body no era JSON — se usa el mensaje genérico
+  }
+  return `Payload API error ${res.status}`;
 }
 
 export async function payloadPost<T>(path: string, body: unknown): Promise<T> {
@@ -20,9 +35,9 @@ export async function payloadPost<T>(path: string, body: unknown): Promise<T> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
-  if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
+  if (!res.ok) throw new Error(await readErrorMessage(res));
   return res.json();
 }
 
@@ -57,6 +72,10 @@ export async function payloadFindOneBySlug<T>(
   return docs[0] ?? null;
 }
 
-export async function payloadGlobal<T>(slug: string, params: Record<string, string> = {}): Promise<T> {
-  return payloadFetch<T>(`/globals/${slug}`, { depth: "2", ...params });
+export async function payloadGlobal<T>(
+  slug: string,
+  params: Record<string, string> = {},
+  options: { revalidate?: number } = {},
+): Promise<T> {
+  return payloadFetch<T>(`/globals/${slug}`, { depth: "2", ...params }, options);
 }

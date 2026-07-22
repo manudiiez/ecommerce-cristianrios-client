@@ -1,7 +1,11 @@
 "use client";
 
 import type { Category } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import type { ShopFilter } from "./use-shop-filter";
+
+const afPillClass =
+  "inline-flex cursor-pointer items-center gap-[7px] rounded-full border border-line bg-paper-2 py-1.5 px-3 text-[12.5px] font-semibold hover:border-ink";
 
 export function ActiveFilterChips({ f, categories }: { f: ShopFilter; categories: Category[] }) {
   const { state, set, clearAll, activeCount } = f;
@@ -15,13 +19,13 @@ export function ActiveFilterChips({ f, categories }: { f: ShopFilter; categories
   if (state.onlyOffers) chips.push({ label: "Con descuento", clear: () => set.setOnlyOffers(false) });
 
   return (
-    <div className="active-filters">
+    <div className="mb-[18px] flex flex-wrap gap-2">
       {chips.map((c, i) => (
-        <button key={i} className="af-pill" onClick={c.clear}>
-          {c.label} <span className="x">×</span>
+        <button key={i} className={afPillClass} onClick={c.clear}>
+          {c.label} <span className="text-[13px] opacity-60">×</span>
         </button>
       ))}
-      <button className="af-pill" style={{ borderStyle: "dashed" }} onClick={clearAll}>
+      <button className={cn(afPillClass, "border-dashed")} onClick={clearAll}>
         Limpiar todo
       </button>
     </div>

@@ -48,8 +48,8 @@ export function SiteChrome({ categories, store, soonestFlash, children }: SiteCh
   return (
     <>
       {showBar && soonestFlash && <FlashBar deal={soonestFlash} onClose={() => setBarOpen(false)} />}
-      <Header onMenu={() => setDrawerOpen(true)} />
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <Header onMenu={() => setDrawerOpen(true)} store={store} />
+      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} store={store} />
       {children}
       <Footer categories={categories} store={store} />
       <Toast msg={cart.toastMsg} />

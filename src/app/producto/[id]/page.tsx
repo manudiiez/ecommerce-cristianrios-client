@@ -16,7 +16,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const product = await api.products.getById(id);
   if (!product) notFound();
 
-  const [category, worlds, categories, allSizes, finishes, worldSizes, related] = await Promise.all([
+  const [category, worlds, categories, allSizes, finishes, worldSizes, related, store] = await Promise.all([
     api.catalog.getCategoryById(product.cat),
     api.catalog.getWorlds(),
     api.catalog.getCategories(),
@@ -24,6 +24,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     api.catalog.getFinishes(),
     api.catalog.getSizesForWorld(product.world),
     api.products.getRelated(product),
+    api.store.get(),
   ]);
   const w = worlds.find((x) => x.id === product.world)!;
   const productSizes = worldSizes.filter((s) => product.availableSizes.includes(s.id));
@@ -40,7 +41,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const priceMap: Record<string, PriceQuote> = Object.fromEntries(priceEntries);
 
   return (
-    <main className="fade-in" id="main">
+    <main className="animate-fade-in" id="main">
       <Crumb
         trail={[
           { label: "Inicio", href: "/" },
@@ -59,6 +60,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         related={related}
         categories={categories}
         priceMap={priceMap}
+        store={store}
       />
     </main>
   );
