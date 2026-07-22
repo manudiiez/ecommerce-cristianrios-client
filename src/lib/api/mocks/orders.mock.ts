@@ -12,13 +12,15 @@ function genCode() {
 export const ordersMock: OrdersService = {
   async create(input: CreateOrderInput) {
     await delay();
+    const count = input.items.reduce((s, i) => s + i.qty, 0);
+    const total = input.items.reduce((s, i) => s + i.price * i.qty, 0);
     const order: Order = {
       code: genCode(),
       nombre: (input.form.nombre ?? "").trim(),
-      count: input.count,
+      count,
       lines: input.items.length,
-      total: input.total,
-      canal: input.form.canal || "WhatsApp o email",
+      total,
+      canal: input.form.canal || "cualquiera",
     };
     // En producción: POST a la API → entra al CRM del dueño.
     if (typeof window !== "undefined") {

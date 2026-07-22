@@ -45,7 +45,7 @@ export function OrderConfirmed({ order, store }: { order: Order; store: Store })
               <div>
                 <b className="block text-[14.5px]">Te contactamos</b>
                 <small className="text-[13px] text-ink-soft">
-                  Por {order.canal === "Email" ? "email" : order.canal === "WhatsApp" ? "WhatsApp" : "WhatsApp o email"}{" "}
+                  Por {order.canal === "email" ? "email" : order.canal === "whatsapp" ? "WhatsApp" : "WhatsApp o email"}{" "}
                   para confirmar stock y precio final.
                 </small>
               </div>

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Order, OrderForm, Store } from "@/lib/api";
-import { api } from "@/lib/api";
+import type { Order, OrderCanal, OrderForm, OrderTipo, Store } from "@/lib/api";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Ico } from "@/components/ui/icon";
 import { useCart } from "@/hooks/use-cart";
 import { ars, cn } from "@/lib/utils";
 import { CartLineItem } from "./cart-line-item";
+import { createOrderAction } from "./order-actions";
 import { OrderConfirmed } from "./order-confirmed";
 
 const FORM_KEY = "hanna_form";
@@ -20,11 +20,23 @@ const fieldLabelClass = "text-[12.5px] font-semibold tracking-[0.03em]";
 const fieldInputClass =
   "rounded border-[1.5px] border-line-strong bg-surface py-3 px-3.5 font-[inherit] text-[14.5px] text-ink outline-none focus:border-ink";
 
+const CANAL_OPTIONS: { value: OrderCanal; label: string }[] = [
+  { value: "whatsapp", label: "WhatsApp" },
+  { value: "email", label: "Email" },
+  { value: "cualquiera", label: "Cualquiera" },
+];
+const TIPO_OPTIONS: { value: OrderTipo; label: string }[] = [
+  { value: "publico", label: "Público" },
+  { value: "revendedor", label: "Revendedor" },
+  { value: "mayorista", label: "Mayorista" },
+];
+
 function readSavedForm(): OrderForm {
+  const defaults: OrderForm = { canal: "cualquiera", tipo: "publico" };
   try {
-    return JSON.parse(localStorage.getItem(FORM_KEY) || "{}");
+    return { ...defaults, ...JSON.parse(localStorage.getItem(FORM_KEY) || "{}") };
   } catch {
-    return {};
+    return defaults;
   }
 }
 
@@ -33,6 +45,7 @@ export function CartPageClient({ store }: { store: Store }) {
   const [form, setForm] = useState<OrderForm>({});
   const [confirmed, setConfirmed] = useState<Order | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // diferido (no sincrónico) para no chocar con el render de hidratación del servidor
@@ -79,21 +92,25 @@ export function CartPageClient({ store }: { store: Store }) {
     );
   }
 
-  const valid = (form.nombre || "").trim().length > 1 && (form.tel || form.email || "").trim().length > 4;
+  const valid =
+    (form.nombre || "").trim().length > 1 &&
+    (form.tel || "").trim().length > 4 &&
+    (form.email || "").trim().length > 4;
 
   const submitOrder = async () => {
     setSubmitting(true);
-    const order = await api.orders.create({
-      items: cart.items,
-      form,
-      count: cart.count,
-      total: cart.total,
-    });
-    cart.clear();
-    localStorage.removeItem(FORM_KEY);
-    setConfirmed(order);
-    setSubmitting(false);
-    window.scrollTo({ top: 0, behavior: "instant" });
+    setError("");
+    try {
+      const order = await createOrderAction({ items: cart.items, form });
+      cart.clear();
+      localStorage.removeItem(FORM_KEY);
+      setConfirmed(order);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No pudimos registrar el pedido. Probá de nuevo.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -159,7 +176,7 @@ export function CartPageClient({ store }: { store: Store }) {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div className={fieldClass}>
-              <label className={fieldLabelClass}>WhatsApp</label>
+              <label className={fieldLabelClass}>WhatsApp *</label>
               <input
                 className={fieldInputClass}
                 value={form.tel || ""}
@@ -168,7 +185,7 @@ export function CartPageClient({ store }: { store: Store }) {
               />
             </div>
             <div className={fieldClass}>
-              <label className={fieldLabelClass}>Email</label>
+              <label className={fieldLabelClass}>Email *</label>
               <input
                 className={fieldInputClass}
                 value={form.email || ""}
@@ -180,15 +197,15 @@ export function CartPageClient({ store }: { store: Store }) {
           <div className={fieldClass}>
             <label className={fieldLabelClass}>¿Cómo preferís que te contactemos?</label>
             <div className="flex flex-wrap gap-2">
-              {["WhatsApp", "Email", "Cualquiera"].map((t) => (
+              {CANAL_OPTIONS.map((opt) => (
                 <div
-                  key={t}
-                  className={cn(optClass, form.canal === t && optActiveClass)}
+                  key={opt.value}
+                  className={cn(optClass, form.canal === opt.value && optActiveClass)}
                   style={{ minWidth: 0, flex: 1, textAlign: "center", padding: "10px 8px" }}
-                  onClick={() => set("canal", t)}
+                  onClick={() => set("canal", opt.value)}
                 >
                   <span className="block text-sm font-semibold" style={{ fontSize: 13 }}>
-                    {t}
+                    {opt.label}
                   </span>
                 </div>
               ))}
@@ -197,15 +214,15 @@ export function CartPageClient({ store }: { store: Store }) {
           <div className={fieldClass}>
             <label className={fieldLabelClass}>¿Comprás como?</label>
             <div className="flex flex-wrap gap-2">
-              {["Público", "Revendedor", "Mayorista"].map((t) => (
+              {TIPO_OPTIONS.map((opt) => (
                 <div
-                  key={t}
-                  className={cn(optClass, form.tipo === t && optActiveClass)}
+                  key={opt.value}
+                  className={cn(optClass, form.tipo === opt.value && optActiveClass)}
                   style={{ minWidth: 0, flex: 1, textAlign: "center", padding: "10px 8px" }}
-                  onClick={() => set("tipo", t)}
+                  onClick={() => set("tipo", opt.value)}
                 >
                   <span className="block text-sm font-semibold" style={{ fontSize: 13 }}>
-                    {t}
+                    {opt.label}
                   </span>
                 </div>
               ))}
@@ -228,15 +245,21 @@ export function CartPageClient({ store }: { store: Store }) {
             block
             disabled={!valid || submitting}
             style={{ opacity: valid ? 1 : 0.5, cursor: valid ? "pointer" : "not-allowed" }}
-            onClick={() => valid && submitOrder()}
+            onClick={() => valid && !submitting && submitOrder()}
           >
-            <Ico.check style={{ fontSize: 19 }} /> Confirmar pedido
+            <Ico.check style={{ fontSize: 19 }} /> {submitting ? "Enviando…" : "Confirmar pedido"}
           </Button>
-          <p className="text-ink-soft" style={{ fontSize: 12, textAlign: "center", marginTop: 10 }}>
-            {valid
-              ? "El equipo de Hanna recibe tu pedido y te contacta para coordinar."
-              : "Completá tu nombre y un medio de contacto para confirmar."}
-          </p>
+          {error ? (
+            <p className="text-flash" style={{ fontSize: 12.5, textAlign: "center", marginTop: 10 }}>
+              {error}
+            </p>
+          ) : (
+            <p className="text-ink-soft" style={{ fontSize: 12, textAlign: "center", marginTop: 10 }}>
+              {valid
+                ? "El equipo de Hanna recibe tu pedido y te contacta para coordinar."
+                : "Completá tu nombre, WhatsApp y email para confirmar."}
+            </p>
+          )}
         </aside>
       </div>
     </main>

@@ -15,14 +15,25 @@ export async function payloadFetch<T>(path: string, params: Record<string, strin
   return res.json();
 }
 
+async function readErrorMessage(res: Response): Promise<string> {
+  try {
+    const data = await res.json();
+    if (typeof data?.message === "string") return data.message;
+    if (Array.isArray(data?.errors) && typeof data.errors[0]?.message === "string") return data.errors[0].message;
+  } catch {
+    // el body no era JSON — se usa el mensaje genérico
+  }
+  return `Payload API error ${res.status}`;
+}
+
 export async function payloadPost<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${PAYLOAD_API_URL}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
-  if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
+  if (!res.ok) throw new Error(await readErrorMessage(res));
   return res.json();
 }
 

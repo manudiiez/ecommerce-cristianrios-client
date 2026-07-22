@@ -68,6 +68,8 @@ export function ProductDetailView({
       name: product.name,
       world: product.world,
       cat: product.cat,
+      sizeId,
+      finishId,
       sizeLabel: currentSize?.label ?? sizeId,
       finishLabel: finishes[finishId]?.label ?? finishId,
       price: pr.price,

@@ -7,6 +7,8 @@ import type {
   Kit,
   KitItem,
   Media,
+  Order,
+  OrderForm,
   Product,
   ProductDiscount,
   ProductImage,
@@ -259,6 +261,37 @@ export function mapKit(raw: PayloadKit): Kit {
     note: raw.note ?? undefined,
     tag: raw.tag ?? undefined,
     images: raw.images?.map(mapGalleryImage) ?? [],
+  };
+}
+
+export interface PayloadOrderItem {
+  type: "product" | "kit" | "flash";
+  refId: string;
+  name: string;
+  sizeSlug?: string | null;
+  finishSlug?: string | null;
+  sizeLabel?: string | null;
+  finishLabel?: string | null;
+  unitPrice: number;
+  qty: number;
+}
+
+export interface PayloadOrder {
+  code: string;
+  form: OrderForm;
+  items: PayloadOrderItem[];
+  count: number;
+  total: number;
+}
+
+export function mapOrder(raw: PayloadOrder): Order {
+  return {
+    code: raw.code,
+    nombre: (raw.form.nombre ?? "").trim(),
+    count: raw.count,
+    lines: raw.items.length,
+    total: raw.total,
+    canal: raw.form.canal || "cualquiera",
   };
 }
 

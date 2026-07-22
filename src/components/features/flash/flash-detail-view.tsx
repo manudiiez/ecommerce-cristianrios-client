@@ -36,7 +36,7 @@ export function FlashDetailView({ deal }: { deal: FlashDeal }) {
     cart.add({
       key: "flash|" + deal.id + "|" + deal.variantGroups.map((g) => selected[g.id]).join("-"),
       id: deal.id,
-      name: deal.name,
+      name: selectedValues.length ? `${deal.name} (${selectedValues.map((v) => v.label).join(" · ")})` : deal.name,
       world: "flash",
       cat: "flash",
       isFlash: true,

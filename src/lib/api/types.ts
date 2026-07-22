@@ -158,12 +158,16 @@ export interface PriceQuote {
   was?: number;
 }
 
+export type OrderCanal = "whatsapp" | "email" | "cualquiera";
+export type OrderTipo = "publico" | "revendedor" | "mayorista";
+
+/** nombre, tel y email son requeridos por el backend (se validan en el form antes de enviar). */
 export interface OrderForm {
   nombre?: string;
   tel?: string;
   email?: string;
-  canal?: string;
-  tipo?: string;
+  canal?: OrderCanal;
+  tipo?: OrderTipo;
   notas?: string;
 }
 
@@ -173,6 +177,9 @@ export interface CartLine {
   name: string;
   world: WorldId | "flash";
   cat: string;
+  /** Solo presentes para productos (type: "product"): slugs reales, no labels. */
+  sizeId?: string;
+  finishId?: FinishId;
   sizeLabel: string;
   finishLabel: string;
   price: number;
