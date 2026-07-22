@@ -12,15 +12,15 @@ const WORLD_TINT: Record<string, Record<string, string>> = {
   holistico: { budas: "#ece0d3", elefantes: "#efd9dd", fuentes: "#dde6df", hornillos: "#efe2d2", mandalas: "#ecdde2", _: "#ecdfd6" },
 };
 
-function strHash(s: string) {
-  let h = 5381;
-  for (let i = 0; i < (s || "").length; i++) h = (h * 33) ^ s.charCodeAt(i);
-  return h >>> 0;
-}
+const FALLBACK_IMAGE: Record<"religioso" | "holistico" | "flash", string> = {
+  religioso: "/products/figura-religiosa.png",
+  holistico: "/products/figura-holistica.png",
+  flash: "/products/oferta-flash.jpg",
+};
 
-function picsumSeed(world: World, cat: Cat, label: string, offset = 0) {
-  const w = world === undefined || world === "flash" ? "flash" : world;
-  return "hanna-" + w + "-" + (cat || "x") + "-" + (strHash(label) % 9973) + "-" + offset;
+function fallbackImage(world: World) {
+  if (world === "religioso" || world === "holistico") return FALLBACK_IMAGE[world];
+  return FALLBACK_IMAGE.flash;
 }
 
 function tintFor(world: World, cat: Cat) {
@@ -51,7 +51,6 @@ export function Placeholder({
   label = "",
   tag,
   tint,
-  offset = 0,
   active,
   className,
   style,
@@ -63,7 +62,7 @@ export function Placeholder({
 }: PlaceholderProps) {
   const t = tint || tintFor(world, cat);
   const classes = ["ph", className, active ? "active" : undefined].filter(Boolean).join(" ");
-  const src = mediaUrl(media, variant) ?? `https://picsum.photos/seed/${picsumSeed(world, cat, label, offset)}/600/750`;
+  const src = mediaUrl(media, variant) ?? fallbackImage(world);
   const alt = media?.alt || label;
   return (
     <div
