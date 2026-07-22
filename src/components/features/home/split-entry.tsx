@@ -58,7 +58,7 @@ export function SplitEntry({ worlds, categories, store }: SplitEntryProps) {
   return (
     <section className="split-entry">
       {half(worlds[0])}
-      <div className="absolute top-0 bottom-0 left-1/2 z-3 flex -translate-x-1/2 items-center pointer-events-none max-[820px]:top-auto max-[820px]:left-0 max-[820px]:right-0 max-[820px]:translate-x-0 max-[820px]:translate-y-1/2 max-[820px]:justify-center">
+      <div className="absolute top-0 bottom-0 left-1/2 z-3 flex -translate-x-1/2 items-center pointer-events-none max-[820px]:static max-[820px]:left-0 max-[820px]:right-0 max-[820px]:-my-7 max-[820px]:translate-x-0 max-[820px]:translate-y-0 max-[820px]:justify-center">
         <div className="pointer-events-auto flex w-[132px] flex-col items-center gap-1 rounded-full border border-line bg-paper py-[22px] px-4 text-center shadow-[0_20px_50px_-18px_rgba(0,0,0,.5)] max-[820px]:w-auto max-[820px]:flex-row max-[820px]:gap-[10px] max-[820px]:py-3 max-[820px]:px-5">
           <Image src="/logo-hanna.png" alt={store.name} width={56} height={56} className="h-14 w-14 object-contain max-[820px]:h-9 max-[820px]:w-9" />
           <b className="display text-[22px] leading-none text-ink max-[820px]:text-[18px]">{store.name}</b>
