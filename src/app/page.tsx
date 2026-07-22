@@ -12,8 +12,8 @@ export default async function HomePage() {
     await Promise.all([
       api.catalog.getWorlds(),
       api.catalog.getCategories(),
-      api.products.getFeatured("religioso"),
-      api.products.getFeatured("holistico"),
+      api.products.getFeatured("religioso", 8),
+      api.products.getFeatured("holistico", 8),
       api.kits.getAll(),
       api.flash.getAll(),
       api.catalog.getAllSizes(),

@@ -2,8 +2,11 @@ import Link from "next/link";
 import type { Category, Finish, FinishId, Product, Size, World, WorldId } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { ProductCard } from "@/components/features/catalog/product-card";
+import { FeaturedCarousel } from "@/components/features/home/featured-carousel";
 import { worldAccent } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 4;
 
 interface FeaturedRowProps {
   world: WorldId;
@@ -46,21 +49,25 @@ export function FeaturedRow({
             Ver todo {w.name} <Ico.arrow />
           </Link>
         </div>
-        <div className="grid grid-4">
-          {products.map((p) => {
-            const cat = categories.find((c) => c.id === p.cat);
-            return (
-              <ProductCard
-                key={p.id}
-                product={p}
-                categoryName={cat?.name ?? ""}
-                categoryHasDiscount={!!cat?.discount}
-                allSizes={allSizes}
-                finishes={finishes}
-              />
-            );
-          })}
-        </div>
+        {products.length > PAGE_SIZE ? (
+          <FeaturedCarousel world={world} products={products} categories={categories} allSizes={allSizes} finishes={finishes} />
+        ) : (
+          <div className="grid grid-4">
+            {products.map((p) => {
+              const cat = categories.find((c) => c.id === p.cat);
+              return (
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  categoryName={cat?.name ?? ""}
+                  categoryHasDiscount={!!cat?.discount}
+                  allSizes={allSizes}
+                  finishes={finishes}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

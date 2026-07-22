@@ -37,7 +37,7 @@ export function CartLineItem({ item }: { item: CartLine }) {
         </span>
       </div>
       <div className="flex flex-col items-end gap-2 text-right">
-        <QtyStepper value={item.qty} onChange={(q) => cart.setQty(item.key, q)} />
+        <QtyStepper value={item.qty} min={0} onChange={(q) => cart.setQty(item.key, q)} />
         <div className="text-base font-bold">{ars(item.price * item.qty)}</div>
       </div>
     </div>

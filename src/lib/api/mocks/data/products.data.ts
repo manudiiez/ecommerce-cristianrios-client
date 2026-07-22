@@ -74,6 +74,8 @@ export const productsData: Omit<Product, "images">[] = [
     finishes: ["crudo", "pintada"],
     blurb: "El santo de las causas urgentes.",
     tag: "Pedido frecuente",
+    featured: true,
+    featuredOrder: 5,
   },
   {
     id: "san-jorge",
@@ -83,6 +85,8 @@ export const productsData: Omit<Product, "images">[] = [
     availableSizes: ["r-30", "r-40", "r-50"],
     finishes: ["crudo", "pintada"],
     blurb: "Sobre el dragón, pieza de gran porte.",
+    featured: true,
+    featuredOrder: 6,
   },
   {
     id: "angel-guarda",
@@ -101,6 +105,8 @@ export const productsData: Omit<Product, "images">[] = [
     availableSizes: ["r-10", "r-15", "r-20", "r-30", "r-40"],
     finishes: ["crudo", "pintada"],
     blurb: "Manos abiertas con rayos, muy pedida pintada.",
+    featured: true,
+    featuredOrder: 7,
   },
   {
     id: "santa-rita",
@@ -119,6 +125,8 @@ export const productsData: Omit<Product, "images">[] = [
     availableSizes: ["r-30", "r-40", "r-50"],
     finishes: ["crudo", "pintada"],
     blurb: "Conjunto compacto para el pesebre.",
+    featured: true,
+    featuredOrder: 8,
   },
   {
     id: "angel-orando",
@@ -187,6 +195,8 @@ export const productsData: Omit<Product, "images">[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Fuente de agua con bomba. Llega lista para enchufar.",
     tag: "Premium",
+    featured: true,
+    featuredOrder: 5,
   },
   {
     id: "hornillo-flor",
@@ -224,6 +234,8 @@ export const productsData: Omit<Product, "images">[] = [
     availableSizes: ["h-mini", "h-chica", "h-mediana", "h-grande"],
     finishes: ["crudo", "pintada"],
     blurb: "Sentado con cuenco, símbolo de prosperidad.",
+    featured: true,
+    featuredOrder: 6,
   },
   {
     id: "elefante-familia",
@@ -234,6 +246,8 @@ export const productsData: Omit<Product, "images">[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Mamá con cría. Se vende mucho como regalo.",
     tag: "Para revender",
+    featured: true,
+    featuredOrder: 7,
   },
   {
     id: "fuente-buda",
@@ -244,6 +258,8 @@ export const productsData: Omit<Product, "images">[] = [
     finishes: ["crudo", "pintada"],
     blurb: "Fuente con cascada y luz LED. Llega lista.",
     discount: { pct: 12, label: "−12%", scope: "all", sizeScope: "all" },
+    featured: true,
+    featuredOrder: 8,
   },
   {
     id: "hornillo-elefante",
