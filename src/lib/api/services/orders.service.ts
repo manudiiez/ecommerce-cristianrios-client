@@ -34,11 +34,10 @@ function toOrderItem(line: CartLine): PayloadOrderItem {
 
 export const ordersService: OrdersService = {
   async create(input) {
-    const raw = await payloadPost<PayloadOrder>("/orders", {
+    const res = await payloadPost<{ doc: PayloadOrder; message: string }>("/orders", {
       form: input.form,
       items: input.items.map(toOrderItem),
     });
-    console.log(JSON.stringify(raw)) 
-    return mapOrder(raw);
+    return mapOrder(res.doc);
   },
 };
