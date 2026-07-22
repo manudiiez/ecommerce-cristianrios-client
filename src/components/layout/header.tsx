@@ -3,17 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Store } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { useCart } from "@/hooks/use-cart";
 import { cn } from "@/lib/utils";
 
-function Logo({ onClick }: { onClick?: () => void }) {
+function Logo({ store, onClick }: { store: Store; onClick?: () => void }) {
   return (
     <Link href="/" className="flex shrink-0 cursor-pointer items-center gap-3" onClick={onClick}>
-      <Image src="/logo-hanna.png" alt="Hanna · Yesos y Aromas" width={46} height={46} className="h-[46px] w-[46px] object-contain" />
+      <Image src="/logo-hanna.png" alt={store.name} width={46} height={46} className="h-[46px] w-[46px] object-contain" />
       <div className="leading-none">
-        <b className="font-display block text-[21px] font-medium tracking-display">Hanna</b>
-        <span className="text-[10px] tracking-[0.26em] text-ink-soft uppercase">Yesos y Aromas</span>
+        <b className="font-display block text-[21px] font-medium tracking-display">{store.name}</b>
+        {store.tagline && <span className="text-[10px] tracking-[0.26em] text-ink-soft uppercase">{store.tagline}</span>}
       </div>
     </Link>
   );
@@ -22,7 +23,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
 const navLinkClass =
   "rounded py-2 px-[13px] text-[13.5px] font-medium text-ink-soft cursor-pointer transition duration-150 whitespace-nowrap hover:text-ink hover:bg-paper-2";
 
-export function Header({ onMenu }: { onMenu: () => void }) {
+export function Header({ onMenu, store }: { onMenu: () => void; store: Store }) {
   const cart = useCart();
   const pathname = usePathname();
   const isWorld = (world: string) => pathname === `/${world}`;
@@ -31,7 +32,7 @@ export function Header({ onMenu }: { onMenu: () => void }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-[color-mix(in_oklab,var(--color-paper)_88%,transparent)] backdrop-blur-[14px] backdrop-saturate-[1.4]">
       <div className="mx-auto flex h-[70px] max-w-[1240px] items-center gap-[18px] px-7 max-[640px]:px-[18px]">
-        <Logo />
+        <Logo store={store} />
         <nav className="ml-auto flex items-center gap-1 max-[860px]:hidden">
           <Link href="/religioso" className={active(isWorld("religioso"))}>
             Religioso

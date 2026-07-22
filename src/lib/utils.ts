@@ -9,13 +9,10 @@ export function ars(n: number) {
   return "$" + n.toLocaleString("es-AR", { maximumFractionDigits: 0 });
 }
 
-const STORE_WHATSAPP = "5492610000000";
-const STORE_EMAIL = "hola@hannayesos.com.ar";
-
-export function waLink(text: string) {
-  return `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(text)}`;
+export function waLink(phone: string, text: string) {
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 
-export function mailLink(subject: string, body: string) {
-  return `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+export function mailLink(email: string, subject: string, body: string) {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

@@ -21,8 +21,8 @@ export function Footer({ categories, store }: FooterProps) {
     <footer className="mt-[70px] bg-ink text-[color-mix(in_oklab,var(--color-paper)_80%,transparent)]">
       <div className="wrap grid grid-cols-[1.5fr_1fr_1fr_1.4fr] gap-9 pt-14 pb-10 max-[820px]:grid-cols-2 max-[820px]:gap-7 max-[480px]:grid-cols-1">
         <div>
-          <b className="font-display block text-[26px] text-paper">Hanna</b>
-          <span className="script text-[22px] text-rose">Yesos y Aromas</span>
+          <b className="font-display block text-[26px] text-paper">{store.name}</b>
+          {store.tagline && <span className="script text-[22px] text-rose">{store.tagline}</span>}
           <p style={{ maxWidth: "34ch", marginTop: 14, fontSize: 14, lineHeight: 1.6 }}>
             Distribuidora de figuras en yeso y regalería holística. Hacé tu pedido por la web y
             coordinamos pago y envío por WhatsApp o email.
@@ -31,7 +31,7 @@ export function Footer({ categories, store }: FooterProps) {
             <LinkButton
               variant="wa"
               size="sm"
-              href={waLink("¡Hola Hanna! Quería hacer una consulta 🙂")}
+              href={waLink(store.whatsapp, `¡Hola ${store.name}! Quería hacer una consulta 🙂`)}
               target="_blank"
               rel="noreferrer"
             >
@@ -41,7 +41,7 @@ export function Footer({ categories, store }: FooterProps) {
               variant="ghost"
               size="sm"
               style={{ borderColor: "rgba(255,255,255,.25)", color: "var(--color-paper)" }}
-              href={mailLink("Consulta", "Hola Hanna,")}
+              href={mailLink(store.email, "Consulta", `Hola ${store.name},`)}
             >
               <Ico.mail /> Email
             </LinkButton>
@@ -90,14 +90,17 @@ export function Footer({ categories, store }: FooterProps) {
                 Cómo comprar
               </Link>
             </li>
-            <li style={{ marginTop: 8, opacity: 0.8 }}>{store.whatsappDisplay}</li>
+            <li style={{ marginTop: 8, opacity: 0.8 }}>{store.whatsappDisplay ?? store.whatsapp}</li>
             <li style={{ opacity: 0.8 }}>{store.email}</li>
-            <li style={{ opacity: 0.8 }}>{store.instagram}</li>
+            {store.instagram && <li style={{ opacity: 0.8 }}>{store.instagram}</li>}
           </ul>
         </div>
       </div>
       <div className="wrap flex flex-wrap justify-between gap-4 border-t border-[rgba(255,255,255,.12)] py-5 text-[12.5px]">
-        <span>© {new Date().getFullYear()} Hanna · Yesos y Aromas. Distribuidora mayorista y minorista.</span>
+        <span>
+          © {new Date().getFullYear()} {store.name}
+          {store.tagline ? ` · ${store.tagline}` : ""}. Distribuidora mayorista y minorista.
+        </span>
         <span>No se realizan pagos online — coordinamos por WhatsApp o email.</span>
       </div>
     </footer>

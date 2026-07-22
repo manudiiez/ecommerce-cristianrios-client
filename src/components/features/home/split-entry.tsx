@@ -3,16 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import type { Category, World } from "@/lib/api";
+import type { Category, Store, World } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
 interface SplitEntryProps {
   worlds: World[];
   categories: Category[];
+  store: Store;
 }
 
-export function SplitEntry({ worlds, categories }: SplitEntryProps) {
+export function SplitEntry({ worlds, categories, store }: SplitEntryProps) {
   const [hover, setHover] = useState<string | null>(null);
 
   const half = (world: World) => {
@@ -59,8 +60,8 @@ export function SplitEntry({ worlds, categories }: SplitEntryProps) {
       {half(worlds[0])}
       <div className="absolute top-0 bottom-0 left-1/2 z-3 flex -translate-x-1/2 items-center pointer-events-none max-[820px]:top-auto max-[820px]:left-0 max-[820px]:right-0 max-[820px]:translate-x-0 max-[820px]:translate-y-1/2 max-[820px]:justify-center">
         <div className="pointer-events-auto flex w-[132px] flex-col items-center gap-1 rounded-full border border-line bg-paper py-[22px] px-4 text-center shadow-[0_20px_50px_-18px_rgba(0,0,0,.5)] max-[820px]:w-auto max-[820px]:flex-row max-[820px]:gap-[10px] max-[820px]:py-3 max-[820px]:px-5">
-          <Image src="/logo-hanna.png" alt="Hanna" width={56} height={56} className="h-14 w-14 object-contain max-[820px]:h-9 max-[820px]:w-9" />
-          <b className="display text-[22px] leading-none text-ink max-[820px]:text-[18px]">Hanna</b>
+          <Image src="/logo-hanna.png" alt={store.name} width={56} height={56} className="h-14 w-14 object-contain max-[820px]:h-9 max-[820px]:w-9" />
+          <b className="display text-[22px] leading-none text-ink max-[820px]:text-[18px]">{store.name}</b>
           <span className="text-[9.5px] tracking-[0.14em] text-ink-soft uppercase max-[820px]:hidden">Elegí tu mundo</span>
         </div>
       </div>

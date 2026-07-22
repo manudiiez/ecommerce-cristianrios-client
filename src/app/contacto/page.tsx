@@ -89,12 +89,12 @@ export default async function ContactoPage() {
             <h2 className="display" style={{ fontSize: 30, margin: "10px 0", color: "#fff" }}>
               Escribinos por WhatsApp
             </h2>
-            <p style={{ position: "relative" }}>{store.whatsappDisplay} · respondemos en el día.</p>
+            <p style={{ position: "relative" }}>{store.whatsappDisplay ?? store.whatsapp} · respondemos en el día.</p>
             <LinkButton
               variant="wa"
               size="lg"
               style={{ position: "relative" }}
-              href={waLink("¡Hola Hanna! Quería hacer una consulta 🙂")}
+              href={waLink(store.whatsapp, `¡Hola ${store.name}! Quería hacer una consulta 🙂`)}
               target="_blank"
               rel="noreferrer"
             >
@@ -119,11 +119,11 @@ export default async function ContactoPage() {
               Por email o Instagram
             </h2>
             <p style={{ opacity: 0.85, margin: "0 0 8px" }}>{store.email}</p>
-            <p style={{ opacity: 0.85, margin: "0 0 20px" }}>{store.instagram}</p>
+            {store.instagram && <p style={{ opacity: 0.85, margin: "0 0 20px" }}>{store.instagram}</p>}
             <LinkButton
               variant="ghost"
               style={{ borderColor: "rgba(255,255,255,.3)", color: "var(--paper)", alignSelf: "flex-start" }}
-              href={mailLink("Consulta", "Hola Hanna,")}
+              href={mailLink(store.email, "Consulta", `Hola ${store.name},`)}
             >
               <Ico.mail style={{ fontSize: 18 }} /> Escribir email
             </LinkButton>

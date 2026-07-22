@@ -15,11 +15,12 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
   const kit = await api.kits.getById(id);
   if (!kit) notFound();
 
-  const [worlds, allSizes, finishes, itemProducts] = await Promise.all([
+  const [worlds, allSizes, finishes, itemProducts, store] = await Promise.all([
     api.catalog.getWorlds(),
     api.catalog.getAllSizes(),
     api.catalog.getFinishes(),
     Promise.all(kit.items.map((it) => (it.productId ? api.products.getById(it.productId) : null))),
+    api.store.get(),
   ]);
   const w = worlds.find((x) => x.id === kit.world)!;
   const save = kit.regular - kit.price;
@@ -124,7 +125,10 @@ export default async function KitDetailPage({ params }: { params: Promise<{ id: 
               variant="wa"
               block
               style={{ marginTop: 10 }}
-              href={waLink(`¡Hola! Me interesa el ${kit.name} (${totalPieces} piezas) a ${ars(kit.price)}. ¿Coordinamos?`)}
+              href={waLink(
+                store.whatsapp,
+                `¡Hola! Me interesa el ${kit.name} (${totalPieces} piezas) a ${ars(kit.price)}. ¿Coordinamos?`,
+              )}
               target="_blank"
               rel="noreferrer"
             >

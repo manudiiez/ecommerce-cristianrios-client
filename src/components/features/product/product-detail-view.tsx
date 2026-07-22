@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Category, Finish, FinishId, PriceQuote, Product, Size } from "@/lib/api";
+import type { Category, Finish, FinishId, PriceQuote, Product, Size, Store } from "@/lib/api";
 import { ProductCard } from "@/components/features/catalog/product-card";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Ico } from "@/components/ui/icon";
@@ -30,6 +30,7 @@ interface ProductDetailViewProps {
   related: Product[];
   categories: Category[];
   priceMap: Record<string, PriceQuote>;
+  store: Store;
 }
 
 export function ProductDetailView({
@@ -42,6 +43,7 @@ export function ProductDetailView({
   related,
   categories,
   priceMap,
+  store,
 }: ProductDetailViewProps) {
   const cart = useCart();
   const [sizeId, setSizeId] = useState(initialSizeId);
@@ -257,6 +259,7 @@ export function ProductDetailView({
             <LinkButton
               variant="wa"
               href={waLink(
+                store.whatsapp,
                 `¡Hola! Me interesa: ${product.name}\nTamaño: ${currentSize ? currentSize.label : sizeId}\nTerminación: ${finishes[finishId].label}\nCantidad: ${qty}\nPrecio ref.: ${ars(pr.price)} c/u`,
               )}
               target="_blank"

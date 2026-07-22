@@ -1,17 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import type { Store } from "@/lib/api";
 import { Ico } from "@/components/ui/icon";
 import { Logo } from "@/components/layout/header";
 
 interface DrawerProps {
   open: boolean;
   onClose: () => void;
+  store: Store;
 }
 
 const navLinkClass = "rounded py-[11px] px-3 font-medium cursor-pointer hover:bg-paper-2";
 
-export function Drawer({ open, onClose }: DrawerProps) {
+export function Drawer({ open, onClose, store }: DrawerProps) {
   if (!open) return null;
 
   return (
@@ -19,7 +21,7 @@ export function Drawer({ open, onClose }: DrawerProps) {
       <div className="fixed inset-0 z-[80] bg-[rgba(20,16,10,.4)] backdrop-blur-[2px]" onClick={onClose}></div>
       <div className="fixed top-0 right-0 bottom-0 z-[81] flex w-[min(86vw,340px)] flex-col gap-1 overflow-y-auto border-l border-line bg-surface p-[22px]">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-          <Logo onClick={onClose} />
+          <Logo store={store} onClick={onClose} />
           <button
             className="inline-flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded border border-line-strong bg-surface"
             onClick={onClose}

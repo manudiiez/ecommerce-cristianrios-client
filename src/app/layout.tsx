@@ -23,11 +23,14 @@ const pinyon = Pinyon_Script({
   weight: "400",
 });
 
-export const metadata: Metadata = {
-  title: "Hanna · Yesos y Aromas",
-  description:
-    "Figuras religiosas en yeso y regalería holística. Pedidos por WhatsApp o email, sin pago online.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const store = await api.store.get();
+  return {
+    title: store.tagline ? `${store.name} · ${store.tagline}` : store.name,
+    description:
+      "Figuras religiosas en yeso y regalería holística. Pedidos por WhatsApp o email, sin pago online.",
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [categories, store, soonestFlash] = await Promise.all([

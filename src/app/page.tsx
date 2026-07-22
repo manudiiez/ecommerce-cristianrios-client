@@ -8,7 +8,7 @@ import { WaTeaser } from "@/components/features/home/wa-teaser";
 import { api } from "@/lib/api";
 
 export default async function HomePage() {
-  const [worlds, categories, featuredReligioso, featuredHolistico, kits, flash, allSizes, finishes, soonestFlash] =
+  const [worlds, categories, featuredReligioso, featuredHolistico, kits, flash, allSizes, finishes, soonestFlash, store] =
     await Promise.all([
       api.catalog.getWorlds(),
       api.catalog.getCategories(),
@@ -19,12 +19,13 @@ export default async function HomePage() {
       api.catalog.getAllSizes(),
       api.catalog.getFinishes(),
       api.flash.getSoonest(),
+      api.store.get(),
     ]);
   const liveFlash = flash.filter((d) => d.endsAt > Date.now());
 
   return (
     <main id="main">
-      <SplitEntry worlds={worlds} categories={categories} />
+      <SplitEntry worlds={worlds} categories={categories} store={store} />
       <Strip />
       {liveFlash.length > 0 && <FlashCarousel deals={liveFlash} />}
       <FeaturedRow

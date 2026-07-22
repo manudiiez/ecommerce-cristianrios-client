@@ -1,4 +1,4 @@
-import type { Category, WhatsAppItem, World } from "@/lib/api";
+import type { Category, Store, WhatsAppItem, World } from "@/lib/api";
 import { Crumb } from "@/components/features/catalog/crumb";
 import { Ico } from "@/components/ui/icon";
 import { LinkButton } from "@/components/ui/button";
@@ -10,12 +10,14 @@ export function WhatsappCategory({
   category,
   world,
   items,
+  store,
 }: {
   category: Category;
   world: World;
   items: WhatsAppItem[];
+  store: Store;
 }) {
-  const consultaMsg = `¡Hola Hanna! Quería consultar por ${category.name} 🙏\n¿Qué opciones/stock tenés disponible hoy?`;
+  const consultaMsg = `¡Hola ${store.name}! Quería consultar por ${category.name} 🙏\n¿Qué opciones/stock tenés disponible hoy?`;
 
   return (
     <main className="animate-fade-in" id="main">
@@ -37,7 +39,14 @@ export function WhatsappCategory({
             {category.note ||
               "Esta categoría rota mucho de stock. Te atendemos en el momento por WhatsApp para confirmar disponibilidad, fragancias y precios."}
           </p>
-          <LinkButton variant="wa" size="lg" href={waLink(consultaMsg)} target="_blank" rel="noreferrer" style={{ position: "relative" }}>
+          <LinkButton
+            variant="wa"
+            size="lg"
+            href={waLink(store.whatsapp, consultaMsg)}
+            target="_blank"
+            rel="noreferrer"
+            style={{ position: "relative" }}
+          >
             <Ico.wa style={{ fontSize: 20 }} /> Consultar {category.name} por WhatsApp
           </LinkButton>
         </div>
@@ -62,7 +71,7 @@ export function WhatsappCategory({
             <a
               key={item.id}
               className="wa-tile"
-              href={waLink(item.waMessage)}
+              href={waLink(store.whatsapp, item.waMessage)}
               target="_blank"
               rel="noreferrer"
             >

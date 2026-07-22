@@ -6,10 +6,14 @@ interface PayloadListResponse<T> {
   nextPage: number | null;
 }
 
-export async function payloadFetch<T>(path: string, params: Record<string, string> = {}): Promise<T> {
+export async function payloadFetch<T>(
+  path: string,
+  params: Record<string, string> = {},
+  options: { revalidate?: number } = {},
+): Promise<T> {
   const qs = new URLSearchParams(params).toString();
   const res = await fetch(`${PAYLOAD_API_URL}${path}${qs ? `?${qs}` : ""}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: options.revalidate ?? 60 },
   });
   if (!res.ok) throw new Error(`Payload API error ${res.status} on ${path}`);
   return res.json();
@@ -68,6 +72,10 @@ export async function payloadFindOneBySlug<T>(
   return docs[0] ?? null;
 }
 
-export async function payloadGlobal<T>(slug: string, params: Record<string, string> = {}): Promise<T> {
-  return payloadFetch<T>(`/globals/${slug}`, { depth: "2", ...params });
+export async function payloadGlobal<T>(
+  slug: string,
+  params: Record<string, string> = {},
+  options: { revalidate?: number } = {},
+): Promise<T> {
+  return payloadFetch<T>(`/globals/${slug}`, { depth: "2", ...params }, options);
 }

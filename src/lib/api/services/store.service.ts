@@ -1,3 +1,4 @@
+import { STORE_REVALIDATE_SECONDS } from "../config";
 import type { PayloadStore } from "../payload/adapters";
 import { mapStore } from "../payload/adapters";
 import { payloadGlobal } from "../payload/client";
@@ -9,7 +10,7 @@ export interface StoreService {
 
 export const storeService: StoreService = {
   async get() {
-    const raw = await payloadGlobal<PayloadStore>("store");
+    const raw = await payloadGlobal<PayloadStore>("store", {}, { revalidate: STORE_REVALIDATE_SECONDS });
     return mapStore(raw);
   },
 };

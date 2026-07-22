@@ -1,10 +1,10 @@
 export interface Store {
   name: string;
-  tagline: string;
+  tagline: string | null;
   whatsapp: string;
-  whatsappDisplay: string;
+  whatsappDisplay: string | null;
   email: string;
-  instagram: string;
+  instagram: string | null;
 }
 
 export type WorldId = "religioso" | "holistico";

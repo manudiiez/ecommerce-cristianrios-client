@@ -200,21 +200,25 @@ export function mapWhatsAppItem(raw: PayloadWhatsAppItem): WhatsAppItem {
 
 export interface PayloadStore {
   name: string;
-  tagline: string;
+  tagline: string | null;
   whatsapp: string;
-  whatsappDisplay: string;
+  whatsappDisplay: string | null;
   email: string;
-  instagram: string;
+  instagram: string | null;
 }
+
+const PLACEHOLDER_STORE_NAME = "Hanna · Yesos y Aromas";
+const PLACEHOLDER_STORE_WHATSAPP = "5492610000000";
+const PLACEHOLDER_STORE_EMAIL = "hola@hannayesos.com.ar";
 
 export function mapStore(raw: PayloadStore): Store {
   return {
-    name: raw.name,
-    tagline: raw.tagline,
-    whatsapp: raw.whatsapp,
-    whatsappDisplay: raw.whatsappDisplay,
-    email: raw.email,
-    instagram: raw.instagram,
+    name: raw.name || PLACEHOLDER_STORE_NAME,
+    tagline: raw.tagline ?? null,
+    whatsapp: raw.whatsapp || PLACEHOLDER_STORE_WHATSAPP,
+    whatsappDisplay: raw.whatsappDisplay ?? null,
+    email: raw.email || PLACEHOLDER_STORE_EMAIL,
+    instagram: raw.instagram ?? null,
   };
 }
 
